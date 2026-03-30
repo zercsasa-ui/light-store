@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@supabase/supabase-js": "^2.100.1",
+    "bootstrap": "^5.3.8",
+    "firebase": "^12.11.0",
+    "react-bootstrap": "^2.10.10",
+    "react-router-dom": "^6.30.3"
+  }
+}

@@ -3,11 +3,14 @@
     "version": "1.0.0",
     "private": true,
     "dependencies": {
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-scripts": "5.0.1",
+        "@supabase/supabase-js": "^2.31.0",
+        "bootstrap": "^5.3.8",
         "firebase": "^9.22.1",
-        "@supabase/supabase-js": "^2.31.0"
+        "react": "^18.2.0",
+        "react-bootstrap": "^2.10.10",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^7.13.2",
+        "react-scripts": "5.0.1"
     },
     "scripts": {
         "start": "react-scripts start",
@@ -33,5 +36,4 @@
             "last 1 safari version"
         ]
     }
-
 }

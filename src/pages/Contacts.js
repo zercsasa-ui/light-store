@@ -1,96 +1,83 @@
-import { useState } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import { supabase } from '../supabase';
+import RequestForm from '../components/RequestForm';
+import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
+import styles from './Contacts.module.css';
 
 const Contacts = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    description: ''
-  });
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const { error } = await supabase
-        .from('requests')
-        .insert([
-          {
-            name: formData.name,
-            phone: formData.phone,
-            description: formData.description,
-            created_at: new Date()
-          }
-        ])
-      
-      if (error) throw error;
-      alert('Заявка успешно отправлена!');
-      setFormData({ name: '', phone: '', description: '' });
-    } catch (error) {
-      console.error('Error submitting request:', error);
-      alert('Ошибка при отправке заявки');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  // Координаты: г.Оренбург, ул.Степана Разина, 182 [широта, долгота]
+  const mapState = {
+    center: [51.778988,55.114769],
+    zoom: 16
   };
 
   return (
-    <Container>
-      <h1 className="text-center my-5">Оставить заявку</h1>
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Имя</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
+    <YMaps query={{ apikey: '88499545-0c13-4377-81ce-dafd2e593d16' }}>
+      <div className={styles.contactsContainer}>
+        <h1 className={styles.title}>Контакты</h1>
+        
+        <div className={styles.topRow}>
+          <div className={styles.infoSection}>
+            <h2>Свяжитесь с нами</h2>
+            <div className={styles.contactItem}>
+              <img src="/images/ico/icoPhone.png" alt="Телефон" className={styles.contactIcon} />
+              <div>
+                <strong>Телефон</strong>
+                <p><a href="tel:+79228629284">8 (922) 862-92-84</a></p>
+              </div>
+            </div>
+            <div className={styles.contactItem}>
+              <img src="/images/ico/icoMail.png" alt="Email" className={styles.contactIcon} />
+              <div>
+                <strong>Email</strong>
+                <p>info@lightstore.ru</p>
+              </div>
+            </div>
+            <div className={styles.contactItem}>
+              <img src="/images/ico/icoAdress.png" alt="Адрес" className={styles.contactIcon} />
+              <div>
+                <strong>Адрес</strong>
+                <p>г. Оренбург, ул. Степана Разина, д. 182</p>
+              </div>
+            </div>
+            <div className={styles.contactItem}>
+              <img src="/images/ico/icoClock.png" alt="Режим работы" className={styles.contactIcon} />
+              <div>
+                <strong>Режим работы</strong>
+                <p>Пн-Пт: 9:00 - 18:00</p>
+              </div>
+            </div>
+          </div>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Телефон</Form.Label>
-              <Form.Control
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
+          <div className={styles.formSection}>
+            <h2>Оставить заявку</h2>
+            <RequestForm />
+          </div>
+        </div>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Описание товара</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                required
+        <div className={styles.mapSection}>
+          <h2>Мы на карте</h2>
+          <div className={styles.mapContainer}>
+            <Map
+              state={mapState}
+              width="100%"
+              height="400px"
+              modules={['geocode', 'templateLayoutFactory']}
+            >
+              <Placemark
+                geometry={[51.778988, 55.114769]}
+                properties={{
+                  iconCaption: 'Магазин Электрика'
+                }}
+                options={{
+                  preset: 'islands#blueIcon',
+                  iconColor: '#0d6efd',
+                  interactive: false
+                }}
               />
-            </Form.Group>
-
-            <Button type="submit" disabled={loading}>
-              {loading ? 'Отправка...' : 'Отправить заявку'}
-            </Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+            </Map>
+          </div>
+        </div>
+      </div>
+    </YMaps>
   );
 };
 

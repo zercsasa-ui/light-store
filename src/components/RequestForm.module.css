@@ -1,0 +1,212 @@
+.requestForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loginPrompt {
+  text-align: center;
+  padding: 40px 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.loginPrompt p {
+  margin: 0;
+  color: #495057;
+}
+
+.loginPrompt button {
+  background: none;
+  border: none;
+  color: #0d6efd;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formGroup label {
+  font-weight: 500;
+  color: #495057;
+}
+
+.formGroup input,
+.formGroup textarea {
+  padding: 10px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.formGroup textarea {
+  max-height: 160px;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #0d6efd;
+}
+
+.submitBtn {
+  padding: 16px 24px;
+  background: #141414;
+  color: white;
+  border: 2px solid #141414;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  width: 100%;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #ffffff;
+  color: #141414;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(20, 20, 20, 0.15);
+}
+
+.submitBtn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.errorText {
+  color: #dc3545;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.textareaHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.charCount {
+  font-size: 13px;
+  color: #6c757d;
+}
+
+/* Стили для react-phone-input-2 */
+.phoneInputContainer {
+  width: 100%;
+}
+
+.phoneInput {
+  width: 100%;
+  padding-left: 52px !important;
+  height: 42px !important;
+  border: 1px solid #dee2e6 !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  transition: border-color 0.2s !important;
+}
+
+.phoneInput:focus {
+  outline: none !important;
+  border-color: #0d6efd !important;
+}
+
+.phoneInputButton {
+  border-radius: 4px !important;
+}
+
+/* Модальное окно */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(20, 20, 20, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.modalContent {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: slideIn 0.3s ease;
+  border: 2px solid #141414;
+}
+
+.successIcon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  background: #198754;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.modalTitle {
+  margin: 0 0 12px;
+  font-size: 1.4rem;
+  color: #141414;
+}
+
+.modalMessage {
+  margin: 0 0 24px;
+  color: #525252;
+  line-height: 1.5;
+}
+
+.modalCloseBtn {
+  padding: 12px 32px;
+  background: #141414;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.modalCloseBtn:hover {
+  background: #2d2d2d;
+  transform: translateY(-1px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

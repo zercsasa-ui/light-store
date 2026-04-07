@@ -1,0 +1,820 @@
+.requestsContainer {
+  padding: 50px;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #141414;
+  font-weight: 600;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formSection,
+.requestsList {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border: 2px solid #141414;
+  border-bottom: none;
+  border-top: none;
+}
+
+.formTitle,
+.listTitle {
+  font-size: 1.3rem;
+  margin-bottom: 24px;
+  color: #141414;
+  font-weight: 600;
+}
+
+/* Панель фильтров */
+.filtersBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.searchInput {
+  flex: 2;
+  min-width: 160px;
+  padding: 8px 12px;
+  border: 1px solid #141414;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.dateInput {
+  min-width: 110px;
+  padding: 8px 10px;
+  border: 1px solid #141414;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.statusFilter {
+  min-width: 120px;
+  padding: 8px 10px;
+  border: 1px solid #141414;
+  border-radius: 6px;
+  font-size: 13px;
+  background: white;
+  cursor: pointer;
+}
+
+.clearFiltersBtn {
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid #141414;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clearFiltersBtn:hover {
+  background: #141414;
+  color: white;
+}
+
+.requests {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 520px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.requests::-webkit-scrollbar {
+  width: 6px;
+}
+
+.requests::-webkit-scrollbar-track {
+  background: #f1f3f5;
+  border-radius: 3px;
+}
+
+.requests::-webkit-scrollbar-thumb {
+  background: #141414;
+  border-radius: 3px;
+}
+
+.requests::-webkit-scrollbar-thumb:hover {
+  background: #2d2d2d;
+}
+
+.requestCard {
+  border: 1px solid #e2e8f0;
+  max-width: 100%;
+  border-radius: 10px;
+  padding: 20px;
+  transition: all 0.2s ease;
+}
+
+.requestCard:hover {
+  border-color: #141414;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(20, 20, 20, 0.08);
+}
+
+.requestHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.requestDate {
+  color: #525252;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.status {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.statusPending {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #f59e0b;
+}
+
+.statusInProgress {
+  background: #cffafe;
+  color: #0e7490;
+  border-color: #06b6d4;
+}
+
+.statusCompleted {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #22c55e;
+}
+
+.statusRejected {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #ef4444;
+}
+
+.statusCancelled {
+  background: #f1f5f9;
+  color: #334155;
+  border-color: #64748b;
+}
+
+.requestMessage {
+  color: #141414;
+  margin: 0 0 8px;
+  white-space: pre-wrap;
+  font-weight: 500;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.truncatedText {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.expandBtn {
+  background: none;
+  border: none;
+  color: #0d9488;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0;
+  margin-bottom: 8px;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.expandBtn:hover {
+  color: #0f766e;
+}
+
+.requestPhone {
+  color: #525252;
+  font-size: 0.9rem;
+  margin: 0 0 12px;
+  font-weight: 500;
+}
+
+.adminResponse {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  border-left: 3px solid #0d9488;
+}
+
+.adminResponse strong {
+  color: #141414;
+  font-weight: 600;
+}
+
+.adminResponse p {
+  margin: 8px 0 0;
+  color: #525252;
+  line-height: 1.5;
+}
+
+.cancelRequestBtn {
+  margin-top: 16px;
+  padding: 10px 20px;
+  background: transparent;
+  color: #dc2626;
+  border: 1px solid #dc2626;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.cancelRequestBtn:hover {
+  background: #dc2626;
+  color: white;
+}
+
+.cancelConfirm {
+  margin-top: 16px;
+  padding: 16px;
+  background: #fef2f2;
+  border-radius: 8px;
+  border: 1px solid #fecaca;
+}
+
+.cancelConfirm p {
+  margin: 0 0 12px;
+  color: #991b1b;
+  font-weight: 500;
+}
+
+.cancelActions {
+  display: flex;
+  gap: 12px;
+}
+
+.confirmCancelBtn {
+  padding: 10px 20px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.confirmCancelBtn:hover {
+  background: #b91c1c;
+}
+
+.cancelBtn {
+  padding: 10px 20px;
+  background: transparent;
+  color: #141414;
+  border: 1px solid #141414;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.cancelBtn:hover {
+  background: #141414;
+  color: white;
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #525252;
+  font-weight: 500;
+}
+
+.confirmedSection {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border: 2px solid #141414;
+  border-bottom: none;
+  border-top: none;
+}
+
+.confirmedTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #141414;
+  margin: 0 0 12px 0;
+}
+
+.confirmedCount {
+  font-size: 0.95rem;
+  color: #525252;
+  margin-bottom: 16px;
+}
+
+.confirmedCount strong {
+  color: #0d9488;
+  font-size: 1.1rem;
+}
+
+.smallSearch {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  border: 1px solid #141414;
+  border-radius: 6px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.confirmedList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.confirmedList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.confirmedList::-webkit-scrollbar-thumb {
+  background: #141414;
+  border-radius: 4px;
+}
+
+.confirmedItem {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.confirmedItemHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.confirmedItemHeader span {
+  font-size: 0.85rem;
+  color: #525252;
+  font-weight: 500;
+}
+
+.confirmedItemText {
+  margin: 0 0 12px 0;
+  color: #141414;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.emptySmall {
+  text-align: center;
+  padding: 40px 20px;
+  color: #525252;
+  font-size: 0.9rem;
+}
+
+/* Адаптив для 1000px и меньше */
+@media (max-width: 1000px) {
+  .requestsContainer {
+    padding: 40px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+    margin-bottom: 28px;
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .formSection,
+  .requestsList {
+    padding: 28px;
+  }
+
+  .formTitle,
+  .listTitle {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+
+  .requests {
+    max-height: 480px;
+  }
+
+  .confirmedList {
+    max-height: 380px;
+  }
+}
+
+/* Адаптив для 900px и меньше */
+@media (max-width: 900px) {
+  .requestsContainer {
+    padding: 40px;
+  }
+
+  .title {
+    font-size: 1.7rem;
+    margin-bottom: 24px;
+  }
+
+  .content {
+    gap: 24px;
+  }
+
+  .formSection,
+  .requestsList {
+    padding: 28px;
+  }
+
+  .formTitle,
+  .listTitle {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+}
+
+/* Адаптив для 720px и меньше */
+@media (max-width: 720px) {
+  .requestsContainer {
+    padding: 30px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .formSection,
+  .requestsList {
+    padding: 24px;
+  }
+
+  .formTitle,
+  .listTitle {
+    font-size: 1.15rem;
+    margin-bottom: 18px;
+  }
+
+  .filtersBar {
+    gap: 6px;
+  }
+
+  .searchInput {
+    flex: 1;
+    min-width: 120px;
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  .dateInput {
+    min-width: 90px;
+    padding: 7px 8px;
+    font-size: 12px;
+  }
+
+  .statusFilter {
+    min-width: 100px;
+    padding: 7px 8px;
+    font-size: 12px;
+  }
+
+  .clearFiltersBtn {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+
+  .requests {
+    max-height: 400px;
+  }
+
+  .requestCard {
+    padding: 16px;
+  }
+
+  .requestDate {
+    font-size: 0.85rem;
+  }
+
+  .status {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+  }
+
+  .requestMessage {
+    font-size: 0.9rem;
+  }
+
+  .requestPhone {
+    font-size: 0.85rem;
+  }
+
+  .adminResponse {
+    padding: 12px;
+  }
+
+  .cancelRequestBtn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+
+  .confirmCancelBtn,
+  .cancelBtn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+
+  .confirmedSection {
+    padding: 20px;
+  }
+
+  .confirmedTitle {
+    font-size: 1rem;
+  }
+
+  .confirmedCount {
+    font-size: 0.9rem;
+  }
+
+  .smallSearch {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  .confirmedList {
+    max-height: 300px;
+  }
+
+  .confirmedItem {
+    padding: 12px;
+  }
+
+  .confirmedItemText {
+    font-size: 0.85rem;
+  }
+}
+
+/* Адаптив для 400px и меньше */
+@media (max-width: 400px) {
+  .requestsContainer {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+
+  .content {
+    gap: 16px;
+  }
+
+  .formSection,
+  .requestsList {
+    padding: 16px;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  .formTitle,
+  .listTitle {
+    font-size: 1.05rem;
+    margin-bottom: 14px;
+  }
+
+  .filtersBar {
+    gap: 4px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+  }
+
+  .searchInput {
+    flex: 1;
+    min-width: 100px;
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+
+  .dateInput {
+    min-width: 80px;
+    padding: 6px 6px;
+    font-size: 11px;
+  }
+
+  .statusFilter {
+    min-width: 90px;
+    padding: 6px 6px;
+    font-size: 11px;
+  }
+
+  .clearFiltersBtn {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .requests {
+    gap: 12px;
+    max-height: 350px;
+    padding-right: 4px;
+  }
+
+  .requestCard {
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .requestHeader {
+    margin-bottom: 8px;
+  }
+
+  .requestDate {
+    font-size: 0.8rem;
+  }
+
+  .status {
+    padding: 3px 8px;
+    font-size: 0.7rem;
+    border-radius: 10px;
+  }
+
+  .requestMessage {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+
+  .expandBtn {
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+  }
+
+  .requestPhone {
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+  }
+
+  .adminResponse {
+    padding: 10px;
+    margin-top: 12px;
+    border-radius: 6px;
+  }
+
+  .adminResponse strong {
+    font-size: 0.85rem;
+  }
+
+  .adminResponse p {
+    font-size: 0.8rem;
+  }
+
+  .cancelRequestBtn {
+    padding: 8px 14px;
+    font-size: 11px;
+    margin-top: 12px;
+  }
+
+  .cancelConfirm {
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 6px;
+  }
+
+  .cancelConfirm p {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+
+  .cancelActions {
+    gap: 8px;
+  }
+
+  .confirmCancelBtn,
+  .cancelBtn {
+    padding: 8px 14px;
+    font-size: 11px;
+  }
+
+  .confirmedSection {
+    padding: 16px;
+    border-radius: 8px;
+    min-width: 90%;
+    margin: 0 auto;
+  }
+
+  .confirmedTitle {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+
+  .confirmedCount {
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+  }
+
+  .confirmedCount strong {
+    font-size: 1rem;
+  }
+
+  .smallSearch {
+    padding: 6px 8px;
+    font-size: 11px;
+    margin-bottom: 12px;
+  }
+
+  .confirmedList {
+    gap: 10px;
+    max-height: 250px;
+    padding-right: 4px;
+  }
+
+  .confirmedList::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  .confirmedItem {
+    padding: 10px;
+    border-radius: 6px;
+  }
+
+  .confirmedItemHeader {
+    margin-bottom: 6px;
+  }
+
+  .confirmedItemHeader span {
+    font-size: 0.8rem;
+  }
+
+  .confirmedItemText {
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+  }
+
+  .loading,
+  .empty {
+    padding: 40px 16px;
+    font-size: 0.9rem;
+  }
+
+  .emptySmall {
+    padding: 30px 16px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .requestsContainer {
+    padding: 24px;
+  }
+}

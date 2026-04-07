@@ -1,0 +1,913 @@
+/* Общие стили */
+.homeContainer {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.section {
+  padding: 80px 0;
+  background: #ffffff;
+}
+
+.sectionSmall {
+  padding: 56px 0;
+  background: #141414;
+  border-top: 1px solid #2d2d2d;
+}
+
+.sectionSmall .sectionTitle {
+  color: #ffffff;
+}
+
+.sectionSmall .ctaText {
+  color: #fafafa;
+}
+
+.sectionGray {
+  padding: 80px 0;
+  background: #141414;
+}
+
+.sectionGray .sectionTitle {
+  color: #ffffff;
+}
+
+.sectionGray .featureCard {
+  background: transparent;
+  border-left: 2px solid #333333;
+}
+
+.sectionGray .featureTitle {
+  color: #ffffff;
+}
+
+.sectionGray .featureText {
+  color: #fafafa;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: center;
+  margin: 0 0 60px 0;
+  position: relative;
+}
+
+/* Hero секция */
+.hero {
+  height: 90vh;
+  min-height: 550px;
+  max-height: 1000px;
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.8) 0%, rgba(15, 23, 42, 0.4) 60%, transparent),
+    url('../../public/images/gallery/красивыеЛампочки.jpg') right/cover no-repeat;
+  display: flex;
+  align-items: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  margin-top: 30px;
+  margin-left: -20px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 40px;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: linear-gradient(#ffffff, transparent);
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 45px;
+  background: linear-gradient(transparent, #ffffff);
+}
+
+.heroContent {
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.heroTitle {
+  font-size: 2.8rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.2px;
+  line-height: 1.25;
+  max-width: 580px;
+}
+
+.heroSubtitle {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  margin: 0 0 36px 0;
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.heroBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 44px;
+  background: white;
+  color: #1e293b;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.heroBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
+}
+
+.heroBtn::after {
+  content: '→';
+  transition: transform 0.2s ease;
+}
+
+.heroBtn:hover::after {
+  transform: translateX(4px);
+}
+
+/* Преимущества */
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 24px;
+}
+
+.featureCard {
+  background: #ffffff;
+  padding: 48px 32px;
+  text-align: left;
+  border-left: 2px solid #e2e8f0;
+  transition: border-color 0.3s ease;
+}
+
+.featureCard:hover {
+  border-color: rgba(20, 20, 20, 1);
+}
+
+.featureNumber {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #94a3b8;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.featureCard:hover .featureNumber {
+  color: rgba(20, 20, 20, 1);
+}
+
+.featureTitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 20px 0;
+  position: relative;
+  z-index: 1;
+  letter-spacing: -0.3px;
+}
+
+.featureText {
+  color: #475569;
+  line-height: 1.75;
+  margin: 0;
+  font-size: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* О нас */
+.aboutGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.aboutImage img {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+.aboutText {
+  color: rgba(245, 245, 245, 0.8); 
+  line-height: 1.7;
+  margin: 0 0 20px 0;
+  font-size: 1.05rem;
+}
+
+/* Галерея */
+.galleryPreview {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+  transition: opacity 0.4s ease;
+}
+
+.galleryPreviewOpen .galleryOverlay,
+.galleryPreviewOpen .galleryCount {
+  display: none;
+}
+
+.galleryMain {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 620px;
+  cursor: pointer;
+}
+
+.galleryMain img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.galleryMain:hover img {
+  transform: scale(1.05);
+}
+
+.galleryOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent, rgba(36, 36, 36, 0.7));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 30px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.galleryMain:hover .galleryOverlay {
+  opacity: 1;
+}
+
+.galleryBtn {
+  background: white;
+  color: #1e293b;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.galleryMain:hover .galleryBtn {
+  transform: translateY(0);
+}
+
+.gallerySide {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.gallerySmall {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 300px;
+  cursor: pointer;
+}
+
+.gallerySmall img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.gallerySmall:hover img {
+  transform: scale(1.06);
+}
+
+.galleryCount {
+  position: absolute;
+  inset: 0;
+  background: rgba(27, 27, 27, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+.galleryFull {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.galleryOpen {
+  max-height: 2000px;
+  opacity: 1;
+  margin-bottom: 30px;
+}
+
+.galleryFull .galleryItem {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 260px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: galleryFadeIn 0.4s ease forwards;
+}
+
+.galleryFull .galleryLarge {
+  grid-column: span 2;
+  height: 260px;
+}
+
+.galleryFull img {
+  width: 100%;
+  height: auto;
+  min-height: 260px;
+  object-fit: contain;
+  transition: transform 0.5s ease;
+}
+
+.galleryFull .galleryItem:hover img {
+  transform: scale(1.06);
+}
+
+@keyframes galleryFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.galleryClose {
+  display: block;
+  margin: 0 auto;
+  padding: 14px 40px;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 10px;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.galleryClose:hover {
+  background: #e2e8f0;
+}
+
+/* Lightbox модалка */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.lightboxImage {
+  max-width: 85vw;
+  max-height: 85vh;
+  position: relative;
+}
+
+.lightboxImage img {
+  max-width: 100%;
+  max-height: 85vh;
+  border-radius: 8px;
+}
+
+.lightboxCounter {
+  position: absolute;
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.lightboxBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lightboxBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lightboxPrev {
+  left: 30px;
+}
+
+.lightboxNext {
+  right: 30px;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lightboxClose:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* CTA секция */
+.ctaSection {
+  background: #141414;
+  padding: 80px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaSection .ctaTitle {
+  color: #ffffff;
+}
+
+.ctaSection .ctaText {
+  color: #fafafa;
+}
+
+.ctaSection .ctaBtn {
+  background: #ffffff;
+  color: #141414;
+  border-color: #ffffff;
+}
+
+.ctaSection .ctaBtn:hover {
+  background: #e2e8f0;
+  border-color: #e2e8f0;
+}
+
+.ctaSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: rgba(20, 20, 20, 1);
+}
+
+.ctaTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.4px;
+}
+
+.ctaText {
+  font-size: 1rem;
+  color: #475569;
+  margin: 0 0 40px 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ctaBtn {
+  display: inline-block;
+  padding: 16px 48px;
+  background: rgba(20, 20, 20, 1);
+  color: white;
+  text-decoration: none;
+  border-radius: 0;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(20, 20, 20, 1);
+  border-right: none;
+  border-left: none;
+}
+
+.ctaBtn:hover {
+  background: rgba(40, 40, 40, 1);
+  border-color: rgba(40, 40, 40, 1);
+  transform: translateY(-2px);
+}
+
+.ctaBtnOutline {
+  background: transparent;
+  color: #1e293b;
+  border-color: #cbd5e1;
+}
+
+.ctaBtnSmall {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  background: transparent;
+  color: rgba(20, 20, 20, 1);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  margin-top: 28px;
+}
+
+.ctaBtnSmall::after {
+  content: '→';
+  transition: transform 0.25s ease;
+}
+
+.ctaBtnSmall:hover::after {
+  transform: translateX(6px);
+}
+
+/* Адаптивная верстка */
+/* Адаптив для 1500px и меньше - отступ heroContent слева */
+@media (max-width: 1500px) {
+  .heroContent {
+    padding-left: 60px;
+  }
+}
+
+@media (max-width: 992px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .aboutGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .section,
+  .sectionGray {
+    padding: 60px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+  }
+
+  .galleryGrid {
+    grid-template-columns: 1fr;
+  }ел
+
+  .ctaTitle {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero {
+    height: 70vh;
+    min-height: 400px;
+    margin-top: 0;
+    margin-left: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .heroTitle {
+    font-size: 1.8rem;
+  }
+
+  .heroSubtitle {
+    font-size: 0.95rem;
+  }
+
+  .heroBtn {
+    padding: 12px 28px;
+    font-size: 0.9rem;
+  }
+
+  .section,
+  .sectionGray {
+    padding: 48px 0;
+  }
+
+  .sectionTitle {
+    font-size: 1.4rem;
+    margin-bottom: 36px;
+  }
+
+  .featuresGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .featureCard {
+    padding: 32px 24px;
+  }
+
+  .featureTitle {
+    font-size: 1.2rem;
+  }
+
+  .aboutGrid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .galleryPreview {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .galleryMain {
+    height: 350px;
+  }
+
+  .gallerySide {
+    flex-direction: row;
+  }
+
+  .gallerySmall {
+    height: 180px;
+    flex: 1;
+  }
+
+  .galleryFull {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .galleryFull .galleryLarge {
+    grid-column: span 1;
+  }
+
+  .sectionSmall {
+    padding: 40px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 60vh;
+    min-height: 350px;
+  }
+
+  .heroTitle {
+    font-size: 1.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 0.85rem;
+  }
+
+  .heroBtn {
+    padding: 10px 24px;
+    font-size: 0.85rem;
+  }
+
+  .section,
+  .sectionGray {
+    padding: 36px 0;
+  }
+
+  .sectionTitle {
+    font-size: 1.2rem;
+    margin-bottom: 28px;
+  }
+
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .featureCard {
+    padding: 24px 20px;
+  }
+
+  .featureTitle {
+    font-size: 1.1rem;
+  }
+
+  .featureText {
+    font-size: 0.9rem;
+  }
+
+  .aboutText {
+    font-size: 0.9rem;
+  }
+
+  .galleryMain {
+    height: 250px;
+  }
+
+  .gallerySide {
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .gallerySmall {
+    height: 120px;
+  }
+
+  .galleryFull {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .galleryFull .galleryItem {
+    height: 180px;
+  }
+
+  .galleryFull .galleryLarge {
+    height: 220px;
+  }
+
+  .lightboxBtn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .lightboxPrev {
+    left: 10px;
+  }
+
+  .lightboxNext {
+    right: 10px;
+  }
+
+  .lightboxClose {
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .sectionSmall {
+    padding: 32px 0;
+  }
+
+  .scrollTopBtn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    bottom: 16px;
+    right: 16px;
+  }
+}
+
+/* Адаптив для 270px и меньше */
+@media (max-width: 270px) {
+  .hero {
+    height: 50vh;
+    min-height: 400px;
+  }
+
+  .heroContent {
+    padding-left: 20px !important;
+    padding-right: 15px;
+  }
+
+  .heroTitle {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+  }
+
+  .heroSubtitle {
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+  }
+
+  .heroButtons {
+    gap: 8px;
+  }
+
+  .heroBtn {
+    padding: 10px 18px;
+    font-size: 0.8rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+  }
+
+  .section {
+    padding: 40px 0;
+  }
+
+  .container {
+    padding: 0 12px;
+  }
+
+  .featureCard {
+    padding: 16px;
+  }
+
+  .featureTitle {
+    font-size: 0.95rem;
+  }
+
+  .featureText {
+    font-size: 0.8rem;
+  }
+
+  .ctaButton {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+
+  .gallerySmall {
+    height: 80px;
+  }
+
+  .galleryFull {
+    gap: 8px;
+  }
+
+  .galleryFull .galleryItem {
+    height: 140px;
+  }
+
+  .galleryFull .galleryLarge {
+    height: 180px;
+  }
+
+  .sectionSmall {
+    padding: 24px 0;
+  }
+}

@@ -1,0 +1,314 @@
+.authContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  position: relative;
+  padding: 20px;
+}
+
+.backToHomeBtn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background: white;
+  border: 2px solid #141414;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #141414;
+  transition: all 0.3s ease;
+}
+
+.backToHomeBtn:hover {
+  background: #141414;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(20, 20, 20, 0.2);
+}
+
+.authCard {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(20, 20, 20, 0.08);
+  border: 2px solid #141414;
+  width: 100%;
+  max-width: 420px;
+}
+
+.authTitle {
+  text-align: center;
+  margin: 0 0 30px 0;
+  color: #141414;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formGroup label {
+  font-weight: 500;
+  color: #141414;
+  font-size: 0.95rem;
+}
+
+.formGroup input {
+  padding: 12px 16px;
+  border: 1px solid #141414;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #0d9488;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+}
+
+.formGroup input::placeholder {
+  color: #a3a3a3;
+}
+
+.authButton {
+  padding: 14px 24px;
+  background-color: #141414;
+  color: white;
+  border: 2px solid #141414;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+}
+
+.authButton:hover:not(:disabled) {
+  background-color: white;
+  color: #141414;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(20, 20, 20, 0.15);
+}
+
+.authButton:disabled {
+  background-color: #a3a3a3;
+  border-color: #a3a3a3;
+  cursor: not-allowed;
+}
+
+.authSwitch {
+  text-align: center;
+  margin-top: 24px;
+  color: #525252;
+  font-size: 0.95rem;
+}
+
+.authSwitch button {
+  background: none;
+  border: none;
+  color: #141414;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.authSwitch button:hover {
+  color: #0d9488;
+}
+
+.errorMessage {
+  background-color: #fef2f2;
+  color: #991b1b;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #fecaca;
+  margin-bottom: 16px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.successMessage {
+  background-color: #f0fdf4;
+  color: #166534;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #bbf7d0;
+  margin-bottom: 16px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Адаптив для 720px и меньше */
+@media (max-width: 720px) {
+  .authContainer {
+    padding: 16px;
+  }
+
+  .backToHomeBtn {
+    top: 16px;
+    left: 16px;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .authCard {
+    padding: 30px;
+  }
+
+  .authTitle {
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+  }
+
+  .authForm {
+    gap: 14px;
+  }
+
+  .formGroup input {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .authButton {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Адаптив для 400px и меньше */
+@media (max-width: 400px) {
+  .authContainer {
+    padding: 12px;
+  }
+
+  .backToHomeBtn {
+    top: 12px;
+    left: 12px;
+    padding: 7px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  .authCard {
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .authTitle {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+  }
+
+  .authForm {
+    gap: 12px;
+  }
+
+  .formGroup {
+    gap: 4px;
+  }
+
+  .formGroup label {
+    font-size: 0.85rem;
+  }
+
+  .formGroup input {
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  .authButton {
+    padding: 10px 18px;
+    font-size: 13px;
+    border-radius: 10px;
+    margin-top: 6px;
+  }
+
+  .authSwitch {
+    margin-top: 20px;
+    font-size: 0.85rem;
+  }
+
+  .authSwitch button {
+    font-size: 0.85rem;
+  }
+
+  .errorMessage,
+  .successMessage {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+  }
+}
+
+/* Адаптив для 330px и меньше */
+@media (max-width: 330px) {
+  .authContainer {
+    padding: 10px;
+  }
+
+  .backToHomeBtn {
+    top: 10px;
+    left: 10px;
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .authCard {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .authTitle {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+  }
+
+  .authForm {
+    gap: 10px;
+  }
+
+  .formGroup label {
+    font-size: 0.8rem;
+  }
+
+  .formGroup input {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  .authButton {
+    padding: 9px 16px;
+    font-size: 12px;
+  }
+
+  .authSwitch {
+    font-size: 0.8rem;
+  }
+
+  .errorMessage,
+  .successMessage {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+}

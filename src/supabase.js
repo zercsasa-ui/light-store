@@ -1,7 +1,12 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = 'https://mutebkvjowivxupnexzp.supabase.co'
+// ✅ Новый вариант через локальный прокси Vercel (обходит любые блокировки)
+const supabaseUrl = '/api/supabase-proxy'
 const supabaseKey = 'sb_publishable_oyu0Kmel3M15Am53sI_tzg_dZws5Hds'
+
+// ❌ Старый вариант прямого подключения (оставлен на всякий случай)
+// const supabaseUrl = 'https://mutebkvjowivxupnexzp.supabase.co'
+// const supabaseKey = 'sb_publishable_oyu0Kmel3M15Am53sI_tzg_dZws5Hds'
 
 // ✅ Резервные домены для обхода блокировок
 const FALLBACK_DOMAINS = [
@@ -30,7 +35,48 @@ const CACHE_TTL = {
   default:      30 * 1000             // 30 секунд по умолчанию
 }
 
+// ✅ Автоматические повторы запросов с экспоненциальной задержкой
+const fetchWithRetry = async (url, options, retries = 4) => {
+  let lastError
+
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), attempt === 0 ? 10000 : 30000)
+
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal
+      })
+
+      clearTimeout(timeoutId)
+      return response
+    } catch (e) {
+      lastError = e
+
+      // Если это последняя попытка - не ждём
+      if (attempt === retries - 1) break
+
+      // Экспоненциальная задержка: 1s → 2s → 4s
+      await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)))
+    }
+  }
+
+  throw lastError
+}
+
 export const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true,
+    flowType: 'implicit',
+    storageKey: 'sb-auth-token',
+    debug: false
+  },
+  global: {
+    fetch: fetchWithRetry
+  },
   db: {
     fetch: async (originalUrl, options = {}) => {
       const body = options.body ? JSON.parse(options.body) : {}

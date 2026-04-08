@@ -191,22 +191,33 @@ const Admin = () => {
     if (!editingUser) return;
 
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          name: userForm.name,
-          email: userForm.email,
-          role: userForm.role
+      // ✅ Используем Edge Function вместо прямого запроса - обходит все проблемы с RLS
+      const { data: { session } } = await supabase.auth.getSession();
+
+      const response = await fetch('https://mutebkvjowivxupnexzp.supabase.co/functions/v1/bright-processor', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userId: editingUser,
+          data: userForm
         })
-        .eq('id', editingUser);
+      });
 
-      if (error) throw error;
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Ошибка сервера');
+      }
 
+      showSuccess('Пользователь успешно обновлен!');
       setEditingUser(null);
       setUserForm({ name: '', email: '', role: '' });
       fetchData();
     } catch (error) {
       console.error('Error updating user:', error);
+      alert(`Ошибка при обновлении пользователя: ${error.message}`);
     }
   };
 
@@ -250,19 +261,54 @@ const Admin = () => {
           await supabase.from('products').delete().eq('id', item.id);
           break;
         case 'delete_request':
-          await supabase.from('requests').delete().eq('id', item.id);
+          // ✅ Удаление заявки через Edge Function обходит RLS
+          const sessionReq = await supabase.auth.getSession();
+
+          await fetch('https://mutebkvjowivxupnexzp.supabase.co/functions/v1/delete-request', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${sessionReq.data.session.access_token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ requestId: item.id })
+          });
           break;
         case 'delete_user':
-          await supabase.from('profiles').delete().eq('id', item.id);
+          // ✅ Удаление пользователя через Edge Function обходит RLS
+          const sessionUser = await supabase.auth.getSession();
+
+          await fetch('https://mutebkvjowivxupnexzp.supabase.co/functions/v1/delete-user', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${sessionUser.data.session.access_token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId: item.id })
+          });
           break;
         case 'delete_category':
           await supabase.from('categories').delete().eq('id', item.id);
           break;
         case 'reset_password':
-          await supabase.auth.resetPasswordForEmail(item.email, {
-            redirectTo: window.location.origin + '/auth'
+          // ✅ Сброс пароля через Edge Function
+          const sessionReset = await supabase.auth.getSession();
+
+          const resetResp = await fetch('https://mutebkvjowivxupnexzp.supabase.co/functions/v1/reset-password', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${sessionReset.data.session.access_token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId: item.id })
           });
-          alert(`Ссылка для сброса пароля отправлена на ${item.email}`);
+
+          const resetResult = await resetResp.json();
+
+          if (!resetResp.ok) {
+            throw new Error(resetResult.error || 'Ошибка сброса пароля');
+          }
+
+          alert(resetResult.message);
           break;
         case 'cancel_edit_product':
           handleCancelEdit();
@@ -286,11 +332,17 @@ const Admin = () => {
 
   const handleUpdateRequest = async (requestId) => {
     try {
+      // ✅ Если написан ответ но статус остался Ожидает - автоматически ставим Выполнена
+      let finalStatus = requestStatus
+      if (adminResponse.trim() && finalStatus === 'pending') {
+        finalStatus = 'completed'
+      }
+
       const { error } = await supabase
         .from('requests')
         .update({
           admin_response: adminResponse,
-          status: requestStatus
+          status: finalStatus
         })
         .eq('id', requestId);
 
@@ -635,7 +687,6 @@ const Admin = () => {
                         value={requestStatus}
                         onChange={(e) => setRequestStatus(e.target.value)}
                       >
-                        <option value="">Выберите статус</option>
                         <option value="pending">Ожидает</option>
                         <option value="in_progress">В работе</option>
                         <option value="completed">Выполнена</option>

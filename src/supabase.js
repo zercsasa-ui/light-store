@@ -4,15 +4,15 @@ import { createClient } from '@supabase/supabase-js'
 // const supabaseUrl = '/api/supabase-proxy'
 // const supabaseKey = 'sb_publishable_oyu0Kmel3M15Am53sI_tzg_dZws5Hds'
 
-// ✅ Старый вариант прямого подключения, пока Supabase не поправят валидацию
+//   Старый вариант прямого подключения, пока Supabase не поправят валидацию
 const supabaseUrl = 'https://mutebkvjowivxupnexzp.supabase.co'
 const supabaseKey = 'sb_publishable_oyu0Kmel3M15Am53sI_tzg_dZws5Hds'
 
-// ✅ Актуальные рабочие зеркала Supabase апрель 2026
+//   Актуальные рабочие зеркала Supabase апрель 2026
 const FALLBACK_DOMAINS = [
   'supabase.com',
   'sg.supabase.co',
-  'in.supabase.co', 
+  'in.supabase.co',
   'us-west-2.aws.supabase.co',
   'ap-southeast-1.aws.supabase.co',
   'supabase-proxy.vercel.app'
@@ -20,25 +20,25 @@ const FALLBACK_DOMAINS = [
 
 let currentDomainIndex = 0
 
-// ✅ Умный глобальный кеш с разным TTL для разных типов данных
+//   Умный глобальный кеш с разным TTL для разных типов данных
 const globalCache = new Map()
 
 // Настройки времени жизни кеша в миллисекундах
 const CACHE_TTL = {
   // Редко меняющиеся данные
-  products:     24 * 60 * 60 * 1000,  // 24 ЧАСА
-  categories:   24 * 60 * 60 * 1000,  // 24 ЧАСА
-  contacts:   24 * 60 * 60 * 1000,    // 24 ЧАСА
-  
+  products: 24 * 60 * 60 * 1000,  // 24 ЧАСА
+  categories: 24 * 60 * 60 * 1000,  // 24 ЧАСА
+  contacts: 24 * 60 * 60 * 1000,    // 24 ЧАСА
+
   // Средняя частота изменений
-  profiles:     15 * 60 * 1000,       // 15 минут (роли пользователей)
-  requests:    5 * 60 * 1000,         // 5 минут (заявки)
-  
+  profiles: 15 * 60 * 1000,       // 15 минут (роли пользователей)
+  requests: 5 * 60 * 1000,         // 5 минут (заявки)
+
   // Динамичные данные
-  default:      30 * 1000             // 30 секунд по умолчанию
+  default: 30 * 1000             // 30 секунд по умолчанию
 }
 
-// ✅ Автоматические повторы запросов с экспоненциальной задержкой
+//   Автоматические повторы запросов с экспоненциальной задержкой
 const fetchWithRetry = async (url, options, retries = 4) => {
   let lastError
 
@@ -68,6 +68,7 @@ const fetchWithRetry = async (url, options, retries = 4) => {
   throw lastError
 }
 
+// ✅ Клиент с зеркалами, повторами и умным кешем
 export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: {
     autoRefreshToken: true,
@@ -84,18 +85,18 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
     fetch: async (originalUrl, options = {}) => {
       const body = options.body ? JSON.parse(options.body) : {}
       const tableName = body.table
-      
-      // ✅ Обрабатываем только SELECT запросы (чтение данных)
+
+      //   Обрабатываем только SELECT запросы (чтение данных)
       const isReadOperation = options.method !== 'POST' || body?.method === 'select'
-      
+
       // ❌ Не кешируем мутации (запись, обновление, удаление)
       if (!isReadOperation || !tableName) {
         // При любом изменении данных сбрасываем кеш для этой таблицы
         if (tableName) {
           invalidateCacheForTable(tableName)
         }
-        
-        // ✅ Фоллбек доменов для мутаций
+
+        //   Фоллбек доменов для мутаций
         for (let i = currentDomainIndex; i < FALLBACK_DOMAINS.length; i++) {
           try {
             const url = originalUrl.replace('supabase.co', FALLBACK_DOMAINS[i])
@@ -104,12 +105,12 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
             currentDomainIndex = (i + 1) % FALLBACK_DOMAINS.length
           }
         }
-        
+
         throw new Error('Все резервные домены недоступны')
       }
 
       const cacheKey = `${tableName}:${JSON.stringify(body)}`
-      
+
       // Проверяем есть ли актуальные данные в кеше
       if (globalCache.has(cacheKey)) {
         const cached = globalCache.get(cacheKey)
@@ -127,43 +128,43 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
               // Тихо игнорируем, у нас есть актуальный кеш
             }
           }, 0)
-          
+
           return new Response(JSON.stringify(cached.data))
         }
         globalCache.delete(cacheKey)
       }
 
-      // ✅ Параллельные запросы на все домены одновременно
-      const requests = FALLBACK_DOMAINS.map((domain, index) => 
+      //   Параллельные запросы на все домены одновременно
+      const requests = FALLBACK_DOMAINS.map((domain, index) =>
         fetch(originalUrl.replace('supabase.co', domain), {
           ...options,
           signal: AbortSignal.timeout(index < 3 ? 6000 : 10000)
         }).catch(() => null)
       )
 
-      // ✅ Ждём первый успешный ответ
+      //   Ждём первый успешный ответ
       const responses = await Promise.allSettled(requests)
       const successIndex = responses.findIndex(r => r.status === 'fulfilled' && r.value.ok)
 
       if (successIndex !== -1) {
         const response = responses[successIndex].value
         const data = await response.clone().json()
-        
+
         // Сохраняем в кеш
         const ttl = CACHE_TTL[tableName] || CACHE_TTL.default
         globalCache.set(cacheKey, {
           data,
           expires: Date.now() + ttl
         })
-        
+
         // Запоминаем самый быстрый рабочий домен
         currentDomainIndex = successIndex
-        
+
         console.log(`✅ Ответил домен ${FALLBACK_DOMAINS[successIndex]} за ${successIndex} позицией`)
         return response
       }
 
-      // ✅ Если все домены упали - возвращаем даже устаревший кеш
+      //   Если все домены упали - возвращаем даже устаревший кеш
       for (const [key, cached] of globalCache) {
         if (key === cacheKey) {
           console.log('⚠️ Использую устаревший кеш, база недоступна')
@@ -176,7 +177,117 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
   }
 })
 
-// ✅ Автоматическая инвалидация кеша при изменении данных
+/*
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true,
+    flowType: 'implicit',
+    storageKey: 'sb-auth-token',
+    debug: false
+  },
+  global: {
+    fetch: fetchWithRetry
+  },
+  db: {
+    fetch: async (originalUrl, options = {}) => {
+      const body = options.body ? JSON.parse(options.body) : {}
+      const tableName = body.table
+
+      //   Обрабатываем только SELECT запросы (чтение данных)
+      const isReadOperation = options.method !== 'POST' || body?.method === 'select'
+
+      // ❌ Не кешируем мутации (запись, обновление, удаление)
+      if (!isReadOperation || !tableName) {
+        // При любом изменении данных сбрасываем кеш для этой таблицы
+        if (tableName) {
+          invalidateCacheForTable(tableName)
+        }
+
+        //   Фоллбек доменов для мутаций
+        for (let i = currentDomainIndex; i < FALLBACK_DOMAINS.length; i++) {
+          try {
+            const url = originalUrl.replace('supabase.co', FALLBACK_DOMAINS[i])
+            return await fetch(url, options)
+          } catch (e) {
+            currentDomainIndex = (i + 1) % FALLBACK_DOMAINS.length
+          }
+        }
+
+        throw new Error('Все резервные домены недоступны')
+      }
+
+      const cacheKey = `${tableName}:${JSON.stringify(body)}`
+
+      // Проверяем есть ли актуальные данные в кеше
+      if (globalCache.has(cacheKey)) {
+        const cached = globalCache.get(cacheKey)
+        if (Date.now() < cached.expires) {
+          // Возвращаем кеш сразу, а в фоне пытаемся обновить
+          setTimeout(async () => {
+            try {
+              const response = await fetch(originalUrl, { ...options, signal: AbortSignal.timeout(3000) })
+              const freshData = await response.json()
+              globalCache.set(cacheKey, {
+                data: freshData,
+                expires: Date.now() + (CACHE_TTL[tableName] || CACHE_TTL.default)
+              })
+            } catch (e) {
+              // Тихо игнорируем, у нас есть актуальный кеш
+            }
+          }, 0)
+
+          return new Response(JSON.stringify(cached.data))
+        }
+        globalCache.delete(cacheKey)
+      }
+
+      //   Параллельные запросы на все домены одновременно
+      const requests = FALLBACK_DOMAINS.map((domain, index) =>
+        fetch(originalUrl.replace('supabase.co', domain), {
+          ...options,
+          signal: AbortSignal.timeout(index < 3 ? 6000 : 10000)
+        }).catch(() => null)
+      )
+
+      //   Ждём первый успешный ответ
+      const responses = await Promise.allSettled(requests)
+      const successIndex = responses.findIndex(r => r.status === 'fulfilled' && r.value.ok)
+
+      if (successIndex !== -1) {
+        const response = responses[successIndex].value
+        const data = await response.clone().json()
+
+        // Сохраняем в кеш
+        const ttl = CACHE_TTL[tableName] || CACHE_TTL.default
+        globalCache.set(cacheKey, {
+          data,
+          expires: Date.now() + ttl
+        })
+
+        // Запоминаем самый быстрый рабочий домен
+        currentDomainIndex = successIndex
+
+        console.log(`  Ответил домен ${FALLBACK_DOMAINS[successIndex]} за ${successIndex} позицией`)
+        return response
+      }
+
+      //   Если все домены упали - возвращаем даже устаревший кеш
+      for (const [key, cached] of globalCache) {
+        if (key === cacheKey) {
+          console.log('⚠️ Использую устаревший кеш, база недоступна')
+          return new Response(JSON.stringify(cached.data))
+        }
+      }
+
+      throw new Error('Нет соединения с базой данных')
+    }
+  }
+})
+*/
+
+//   Автоматическая инвалидация кеша при изменении данных
 function invalidateCacheForTable(tableName) {
   for (const [key] of globalCache) {
     if (key.startsWith(`${tableName}:`)) {
@@ -186,20 +297,20 @@ function invalidateCacheForTable(tableName) {
   console.log(`🔄 Кеш для таблицы ${tableName} очищен`)
 }
 
-// ✅ Ручная очистка всего кеша при необходимости
+//   Ручная очистка всего кеша при необходимости
 export const clearAllCache = () => {
   globalCache.clear()
   console.log('🗑️ Весь кеш очищен')
 }
 
-// ✅ Функция для предзагрузки каталога (используется в сайдбаре)
+//   Функция для предзагрузки каталога (используется в сайдбаре)
 export const preloadCatalog = async () => {
   try {
     await Promise.all([
       supabase.from('products').select('*, categories(name)').limit(200),
       supabase.from('categories').select('*')
     ])
-    console.log('✅ Каталог предзагружен в кеш')
+    console.log('  Каталог предзагружен в кеш')
   } catch (e) {
     // Тихо игнорируем ошибки предзагрузки
   }

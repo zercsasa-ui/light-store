@@ -5,6 +5,7 @@ import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from './components/ProtectedRoute';
 import LampRope from './components/LampRope';
 import ThemeColorPicker from './components/ThemeColorPicker';
+import ThemeTransition from './components/ThemeTransition';
 import styles from './components/MainSidebar.module.css';
 import Home from './pages/Home';
 import Catalog from './pages/Catalog';
@@ -31,6 +32,9 @@ function App() {
       
       {/* Физическая верёвочка с лампочкой */}
       <LampRope />
+
+      {/* Анимация смены темы расширяющимся кругом */}
+      <ThemeTransition />
 
       {/* Временная панель выбора цвета темы */}
       <ThemeColorPicker />

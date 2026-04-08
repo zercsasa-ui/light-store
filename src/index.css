@@ -41,3 +41,8 @@ textarea,
 select {
   transition: border-color 0.2s, box-shadow 0.2s !important;
 }
+
+
+.country-list{
+  color:#141414;
+}

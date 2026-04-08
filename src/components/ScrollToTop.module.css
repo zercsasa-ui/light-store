@@ -12,7 +12,7 @@
   color: #0d9488;
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 9999;
+  z-index: 99;
   animation: fadeIn 0.3s ease;
   opacity: 0.4;
   display: flex;

@@ -33,6 +33,7 @@
   border: 2px solid var(--accent-color);
   border-bottom: none;
   border-top: none;
+
 }
 
 .formTitle,
@@ -131,9 +132,13 @@
 .requestCard {
   border: 1px solid var(--border-color);
   max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
   border-radius: 10px;
   padding: 20px;
   transition: all 0.2s ease;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .requestCard:hover {
@@ -145,8 +150,10 @@
 .requestHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 12px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .requestDate {
@@ -200,6 +207,8 @@
   font-weight: 500;
   line-height: 1.5;
   word-break: break-word;
+  overflow-wrap: anywhere;
+  max-width: 100%;
 }
 
 .truncatedText {
@@ -231,6 +240,7 @@
   font-size: 0.9rem;
   margin: 0 0 12px;
   font-weight: 500;
+  overflow-wrap: anywhere;
 }
 
 .adminResponse {
@@ -413,6 +423,14 @@
   color: var(--text-primary);
   font-size: 0.9rem;
   line-height: 1.4;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .emptySmall {

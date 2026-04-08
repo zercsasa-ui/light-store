@@ -50,6 +50,7 @@
   margin-bottom: 24px;
   color: var(--text-primary);
   font-weight: 600;
+  
 }
 
 .contactItem {
@@ -60,6 +61,7 @@
   padding: 12px;
   border-radius: 8px;
   transition: all 0.2s ease;
+  
 }
 
 .contactItem:hover {

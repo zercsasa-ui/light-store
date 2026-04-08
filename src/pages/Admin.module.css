@@ -1,37 +1,41 @@
 .adminContainer {
   padding: 50px;
+  background: var(--bg-primary);
+  min-height: 100vh;
 }
 
 .title {
   font-size: 2rem;
   margin-bottom: 30px;
-  color: #212529;
+  color: var(--text-primary);
 }
 
 .tabs {
   display: flex;
   gap: 10px;
   margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 .tab {
   padding: 10px 20px;
-  border: 1px solid #dee2e6;
-  background: white;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
   transition: all 0.2s;
+  color: var(--text-primary);
 }
 
 .tab:hover {
-  background: #e9ecef;
+  background: var(--bg-tertiary);
 }
 
 .tab.active {
-  background: #141414;
-  color: white;
-  border-color: #141414;
+  background: var(--accent-color);
+  color: var(--bg-primary);
+  border-color: var(--accent-color);
 }
 
 .accessDenied {
@@ -44,13 +48,13 @@
 .loading {
   text-align: center;
   padding: 40px;
-  color: #6c757d;
+  color: var(--text-secondary);
 }
 
 .empty {
   text-align: center;
   padding: 40px;
-  color: #6c757d;
+  color: var(--text-secondary);
 }
 
 /* Заявки */
@@ -100,17 +104,19 @@
 }
 
 .requestsList::-webkit-scrollbar-track {
-  background: #f1f3f4;
+  background: var(--bg-secondary);
   border-radius: 3px;
 }
 
 .requestsList::-webkit-scrollbar-thumb {
-  background: #adb5bd;
+  background: var(--text-secondary);
   border-radius: 3px;
+  opacity: 0.5;
 }
 
 .requestsList::-webkit-scrollbar-thumb:hover {
-  background: #6c757d;
+  background: var(--text-primary);
+  opacity: 0.7;
 }
 
 .filtersBar {
@@ -120,6 +126,7 @@
   margin-bottom: 20px;
   flex-wrap: wrap;
 }
+
 
 .searchWrapper {
   flex: 1;
@@ -136,27 +143,31 @@
   height: 16px;
   opacity: 0.6;
   pointer-events: none;
+  filter: var(--icon-filter, none);
 }
 
 .searchInput {
   width: 100%;
   padding: 10px 14px 10px 42px;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   font-size: 14px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .filterSelect {
   padding: 10px 14px;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   font-size: 14px;
-  background: white;
+  background: var(--bg-secondary);
   min-width: 140px;
+  color: var(--text-primary);
 }
 
 .searchCount {
-  color: #6c757d;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   white-space: nowrap;
   margin-left: auto;
@@ -169,8 +180,8 @@
   gap: 24px;
   position: relative;
   padding: 16px 20px;
-  background: white;
-  border: 1px solid #dee2e6;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   width: 100%;
 }
@@ -186,7 +197,6 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
-
   min-width: 160px;
 }
 
@@ -215,8 +225,8 @@
 }
 
 .requestsList:not(.requestsGrid) .requestCard .editForm {
-  background: #f8f9fa;
-  border-top: 1px solid #dee2e6;
+  background: var(--bg-tertiary);
+  border-top: 1px solid var(--border-color);
   margin-top: 16px;
   padding: 16px;
   border-radius: 0 0 8px 8px;
@@ -228,7 +238,6 @@
 .requestsList:not(.requestsGrid) .requestCard .editForm textarea,
 .requestsList:not(.requestsGrid) .requestCard .editForm select {
   width: 100%;
-
   box-sizing: border-box;
 }
 
@@ -238,8 +247,8 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: white;
-  border: 1px solid #dee2e6;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
 }
 
@@ -277,6 +286,7 @@
   padding: 16px;
   width: 100%;
   box-sizing: border-box;
+  background: var(--bg-tertiary);
 }
 
 .requestsGrid .editForm textarea,
@@ -304,22 +314,22 @@
 
 .requestEmail {
   display: block;
-  color: #6c757d;
+  color: var(--text-secondary);
   font-size: 0.85rem;
 }
 
 .requestDate {
-  color: #6c757d;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
 .requestPhone {
-  color: #495057;
+  color: var(--text-primary);
   margin: 8px 0;
 }
 
 .requestMessage {
-  color: #212529;
+  color: var(--text-primary);
   margin: 12px 0;
   white-space: pre-wrap;
   word-break: break-word;
@@ -370,6 +380,7 @@
   background: #fef3c7;
   color: #92400e;
   border-color: #f59e0b;
+  border-radius: 4px;
 }
 
 .statusInProgress {
@@ -403,19 +414,23 @@
 
 .editForm textarea {
   padding: 10px;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 14px;
   max-height: 300px;
   min-height: 80px;
   resize: vertical;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .editForm select {
   padding: 10px;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 14px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .editActions {
@@ -432,33 +447,56 @@
 }
 
 .editActions button:first-child {
-  background: #141414;
-  color: white;
+  background: var(--accent-color);
+  color: var(--bg-primary);
 }
 
 .editActions button:last-child {
-  background: #6c757d;
-  color: white;
+  background: var(--text-secondary);
+  color: var(--bg-primary);
 }
 
+/* ✅ Строгий стиль кнопок для запросов */
 .editBtn {
-  padding: 8px 16px;
-  background: #141414;
-  color: white;
-  border: none;
+  padding: 6px 14px;
+  background: transparent;
+color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  background-color:var(--accent-hover);
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.deleteBtn {
+  padding: 5px 10px;
+  background: transparent;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s ease;
 }
 
 .requestActions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   margin-top: 12px;
 }
 
 .editBtn:hover {
-  background: #2d2d2d;
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--bg-primary);
+}
+
+.deleteBtn:hover {
+  background: #dc3545;
+  color: white;
 }
 
 /* Товары */
@@ -467,11 +505,14 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .productsHeader h2 {
   margin: 0;
   font-size: 1.3rem;
+  color: var(--text-primary);
 }
 
 .productsHeaderActions {
@@ -483,9 +524,8 @@
 
 .viewToggleBtn {
   padding: 10px;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(20, 20, 20, 0.1);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -495,16 +535,17 @@
 }
 
 .viewToggleBtn:hover {
-  background: #141414;
-  border-color: #141414;
+  background: var(--accent-color);
+  border-color: var(--accent-color);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(20, 20, 20, 0.2);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .viewIcon {
   width: 18px;
   height: 18px;
   transition: all 0.3s ease;
+  filter: var(--icon-filter, none);
 }
 
 .viewToggleBtn:hover .viewIcon {
@@ -530,7 +571,7 @@
 }
 
 .productForm {
-  background: #f8f9fa;
+  background: var(--bg-secondary);
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -542,25 +583,29 @@
 .formRow {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .formRow>* {
   flex: 1;
+  min-width: 200px;
 }
 
 .productForm input,
 .productForm textarea,
 .productForm select {
   padding: 10px;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 14px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .submitProductBtn {
   padding: 10px 20px;
-  background: #141414;
-  color: white;
+  background: var(--accent-color);
+  color: var(--bg-primary);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -568,7 +613,7 @@
 }
 
 .submitProductBtn:hover {
-  background: #2d2d2d;
+  background: var(--accent-hover);
 }
 
 .productsList {
@@ -628,38 +673,38 @@
 }
 
 .productsList::-webkit-scrollbar-track {
-  background: #f1f3f4;
+  background: var(--bg-secondary);
   border-radius: 3px;
 }
 
 .productsList::-webkit-scrollbar-thumb {
-  background: #adb5bd;
+  background: var(--text-secondary);
   border-radius: 3px;
+  opacity: 0.5;
 }
 
 .productsList::-webkit-scrollbar-thumb:hover {
-  background: #6c757d;
+  background: var(--text-primary);
+  opacity: 0.7;
 }
 
 .productCard {
   display: flex;
   gap: 16px;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(20, 20, 20, 0.08);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 20px;
   align-items: center;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 24px rgba(20, 20, 20, 0.06);
+  box-shadow: 0 4px 24px var(--shadow-color);
 }
 
 .productCard:hover {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--bg-tertiary);
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(20, 20, 20, 0.12);
-  border-color: #141414;
+  box-shadow: 0 12px 40px var(--shadow-color);
+  border-color: var(--accent-color);
 }
 
 .productThumb {
@@ -677,11 +722,12 @@
 .productDetails h3 {
   margin: 0 0 8px;
   font-size: 1rem;
+  color: var(--text-primary);
 }
 
 .productDetails p {
   margin: 0 0 8px;
-  color: #6c757d;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
@@ -700,7 +746,7 @@
 }
 
 .productStock {
-  color: #6c757d;
+  color: var(--text-secondary);
   font-size: 0.85rem;
   white-space: nowrap;
 }
@@ -728,15 +774,16 @@
 
 .imageUpload label {
   font-weight: 500;
-  color: #495057;
+  color: var(--text-primary);
 }
 
 .imageUpload input[type="file"] {
   padding: 8px;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
-  background: white;
+  background: var(--bg-primary);
   font-size: 14px;
+  color: var(--text-primary);
 }
 
 .uploading {
@@ -753,7 +800,7 @@
   max-height: 150px;
   object-fit: cover;
   border-radius: 4px;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--border-color);
 }
 
 /* Чекбокс */
@@ -770,7 +817,7 @@
   gap: 8px;
   cursor: pointer;
   font-size: 14px;
-  color: #495057;
+  color: var(--text-primary);
 }
 
 .checkboxLabel input[type="checkbox"] {
@@ -783,12 +830,13 @@
 .formActions {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .cancelBtn {
   padding: 10px 20px;
-  background: #6c757d;
-  color: white;
+  background: var(--text-secondary);
+  color: var(--bg-primary);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -796,7 +844,106 @@
 }
 
 .cancelBtn:hover {
-  background: #5a6268;
+  background: var(--accent-hover);
+}
+
+/* Модальное окно подтверждения */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modalContent {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 450px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+}
+
+.modalTitle {
+  margin: 0 0 16px;
+  font-size: 1.3rem;
+  color: var(--text-primary);
+}
+
+.modalMessage {
+  margin: 0 0 24px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.modalConfirmBtn {
+  padding: 10px 20px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.modalConfirmBtn:hover {
+  background: #bb2d3b;
+}
+
+.modalCancelBtn {
+  padding: 10px 20px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.modalCancelBtn:hover {
+  background: var(--bg-secondary);
+}
+
+/* Уведомление об успехе */
+.successNotification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #22c55e;
+  color: white;
+  padding: 14px 24px;
+  border-radius: 8px;
+  z-index: 1001;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 /* Статусы товара */
@@ -807,7 +954,7 @@
 }
 
 .statusInactive {
-  color: #6c757d;
+  color: var(--text-secondary);
   font-size: 0.85rem;
   font-weight: 500;
 }
@@ -822,8 +969,8 @@
 
 .editProductBtn {
   padding: 10px 16px;
-  background: #141414;
-  color: white;
+  background: var(--accent-color);
+  color: var(--bg-primary);
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -833,9 +980,9 @@
 }
 
 .editProductBtn:hover {
-  background: #333333;
+  background: var(--accent-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(20, 20, 20, 0.25);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .deleteBtn {
@@ -860,7 +1007,7 @@
 .productForm h3 {
   margin: 0 0 12px;
   font-size: 1.1rem;
-  color: #212529;
+  color: var(--text-primary);
 }
 
 /* Пользователи */
@@ -929,22 +1076,24 @@
 }
 
 .usersList::-webkit-scrollbar-track {
-  background: #f1f3f4;
+  background: var(--bg-secondary);
   border-radius: 3px;
 }
 
 .usersList::-webkit-scrollbar-thumb {
-  background: #adb5bd;
+  background: var(--text-secondary);
   border-radius: 3px;
+  opacity: 0.5;
 }
 
 .usersList::-webkit-scrollbar-thumb:hover {
-  background: #6c757d;
+  background: var(--text-primary);
+  opacity: 0.7;
 }
 
 .userCard {
-  background: white;
-  border: 1px solid #dee2e6;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 20px;
 }
@@ -954,15 +1103,18 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .userMainInfo h3 {
   margin: 0 0 4px;
   font-size: 1.1rem;
+  color: var(--text-primary);
 }
 
 .userEmail {
-  color: #6c757d;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
@@ -984,12 +1136,12 @@
 }
 
 .role_user {
-  background: #e9ecef;
-  color: #495057;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .userDate {
-  color: #6c757d;
+  color: var(--text-secondary);
   font-size: 0.85rem;
   margin: 0 0 12px;
 }
@@ -997,186 +1149,129 @@
 .userEditForm {
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
 }
-
-.userEditForm input,
-.userEditForm select {
-  padding: 10px 14px;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
+.userEditForm input{
+    flex: 1;
+  min-width: 250px;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
   font-size: 14px;
-  width: 100%;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
-.userEditForm input:focus,
-.userEditForm select:focus {
-  outline: none;
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+.userEditForm select{
+    flex: 1;
+  min-width: 250px;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
-
-.inputModified {
-  position: relative;
-}
-
-.inputModified::after {
-  content: '*';
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #dc3545;
-  font-weight: 700;
-  font-size: 18px;
-  cursor: pointer;
-  z-index: 10;
-  padding: 4px 8px;
-  margin: -4px -8px;
-}
-
-.inputModified:hover::after {
-  transform: translateY(-50%) scale(1.3);
-  color: #b02a37;
-}
-
-.userEditForm .formRow {
-  position: relative;
-}
-
 .userActions {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 16px;
 }
 
 .userActions button {
-  padding: 8px 14px;
+  padding: 8px 16px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  min-width: 115px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-
-.editUserBtn {
-  background: #141414;
-  color: white;
-}
-
-.editUserBtn:hover {
-  background: #2d2d2d;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(20, 20, 20, 0.3);
-}
-
-.saveUserBtn {
-  background: #141414;
-  color: white;
-}
-
-.saveUserBtn:hover {
-  background: #2d2d2d;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(20, 20, 20, 0.3);
-}
-
-.resetPasswordBtn {
-  background: transparent;
-  color: #141414;
-  border: 1px solid #141414;
-}
-
-.resetPasswordBtn:hover {
-  background: rgba(20, 20, 20, 0.05);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(20, 20, 20, 0.15);
-}
-
-.deleteUserBtn {
-  background: transparent;
-  color: #dc3545;
-  border: 1px solid #dc3545;
-}
-
-.deleteUserBtn:hover {
-  background: #dc3545;
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
 }
 
 /* Категории */
 .categoriesSection {
   padding: 20px 0;
 }
-
-.categoriesList {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 16px;
-  max-height: calc(100vh - 300px);
-  overflow-y: auto;
-  padding-right: 8px;
-  padding-bottom: 20px;
-}
-
-.categoriesList::-webkit-scrollbar {
-  width: 6px;
-}
-
-.categoriesList::-webkit-scrollbar-track {
-  background: #f1f3f4;
-  border-radius: 3px;
-}
-
-.categoriesList::-webkit-scrollbar-thumb {
-  background: #adb5bd;
-  border-radius: 3px;
-}
-
-.categoriesList::-webkit-scrollbar-thumb:hover {
-  background: #6c757d;
-}
-
-.categoryCard {
-  background: white;
-  border: 1px solid #dee2e6;
+.categoriesSection div{
+  background-color:var(--bg-secondary);
+  padding: 10px;
   border-radius: 8px;
+}
+.categoryForm {
+  background: var(--bg-secondary);
   padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.categoryForm input {
+  flex: 1;
+  min-width: 250px;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+
+}
+.categoryForm input:first-of-type{
+max-width: 20%;
+}
+.categoryForm textarea{
+width: 40%;
+}
+
+.categoryList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.categoryItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  padding: 20px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px var(--shadow-color);
+  cursor: pointer;
 }
 
-.categoryInfo h3 {
-  margin: 0 0 6px;
+.categoryItem:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--shadow-color);
+  border-color: var(--accent-color);
+  border-width: 2px;
+  background: var(--bg-tertiary);
+}
+
+.categoryLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.categoryName {
   font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
 }
 
-.categoryInfo p {
-  margin: 0 0 8px;
-  color: #6c757d;
-  font-size: 0.9rem;
-}
-
-.categoryProductsCount {
-  color: #0d6efd;
+.categoryCount {
+  color: var(--text-secondary);
   font-size: 0.85rem;
-  font-weight: 500;
+  margin: 0;
 }
 
 .categoryActions {
@@ -1184,696 +1279,125 @@
   gap: 8px;
 }
 
-.categoryForm {
-  background: #f8f9fa;
-  padding: 20px;
+.categoryActions button {
+  padding: 8px 14px;
   border-radius: 8px;
-  margin-bottom: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.categoryEditBtn {
+  background: var(--accent-color);
+  color: var(--bg-primary);
+}
+
+.categoryEditBtn:hover {
+  background: var(--accent-hover);
+}
+
+.categoryDeleteBtn {
+  background: transparent;
+  color: #dc3545;
+  border: 1px solid #dc3545 !important;
+}
+
+.categoryDeleteBtn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+/* Форма редактирования категории */
+.categoryEditForm {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px solid var(--border-color);
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.categoryForm input,
-.categoryForm textarea {
-  padding: 10px;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.confirmActions {
-  display: flex;
-  gap: 10px;
-}
-
-.confirmYesBtn {
-  padding: 8px 16px;
-  background: #198754;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.confirmYesBtn:hover {
-  background: #157347;
-}
-
-/* Уведомление успех */
-.successNotification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #ffffff;
-  color: #141414;
-  padding: 16px 24px;
+.categoryEditForm input {
+  padding: 12px;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
-  border: 2px solid #141414;
-  z-index: 9999;
-  font-weight: 600;
-  animation: slideIn 0.3s ease;
-  box-shadow: 0 8px 24px rgba(20, 20, 20, 0.15);
-}
-
-/* Модальное окно подтверждения */
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(20, 20, 20, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.2s ease;
-}
-
-.modalContent {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 32px;
-  max-width: 420px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-  animation: slideIn 0.3s ease;
-  border: 2px solid #141414;
-}
-
-.modalTitle {
-  margin: 0 0 16px;
-  font-size: 1.3rem;
-  color: #141414;
-  font-weight: 600;
-}
-
-.modalMessage {
-  margin: 0 0 28px;
-  color: #525252;
-  line-height: 1.6;
-  font-size: 1rem;
-}
-
-.modalActions {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-}
-
-.modalConfirmBtn {
-  padding: 12px 24px;
-  background: #141414;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
   font-size: 14px;
-  font-weight: 600;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   transition: all 0.2s ease;
 }
 
-.modalConfirmBtn:hover {
-  background: #2d2d2d;
-  transform: translateY(-1px);
+.categoryEditForm input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.1);
 }
 
-.modalCancelBtn {
-  padding: 12px 24px;
-  background: transparent;
-  color: #141414;
-  border: 1px solid #141414;
+.categoryEditActions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.categoryEditActions button {
+  padding: 10px 18px;
   border-radius: 8px;
+  border: none;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   transition: all 0.2s ease;
 }
 
-.modalCancelBtn:hover {
-  background: rgba(20, 20, 20, 0.05);
-  border-color: #2d2d2d;
+.categorySaveBtn {
+  background: var(--accent-color);
+  color: var(--bg-primary);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+.categorySaveBtn:hover {
+  background: var(--accent-hover);
 }
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.categoryCancelBtn {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color) !important;
 }
 
-/* Адаптив для 1000px и меньше */
-@media (max-width: 1000px) {
+.categoryCancelBtn:hover {
+  background: var(--border-color);
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
   .adminContainer {
-    padding: 40px;
-  }
-
-  .adminTitle {
-    font-size: 1.8rem;
-    margin-bottom: 28px;
-  }
-
-  .dashboard {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
-
-  .statCard {
-    padding: 24px;
-  }
-
-  .statValue {
-    font-size: 2rem;
-  }
-
-  .statLabel {
-    font-size: 0.95rem;
-  }
-
-  .tabs {
-    gap: 6px;
-    margin-bottom: 24px;
-  }
-
-  .tab {
-    padding: 10px 18px;
-    font-size: 14px;
-  }
-
-  .productsList {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-  }
-
-  .categoriesList {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  }
-
-  .usersList {
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  }
-}
-
-/* Адаптив для 720px и меньше */
-@media (max-width: 720px) {
-  .adminContainer {
-    padding: 30px;
-  }
-
-  .adminTitle {
-    font-size: 1.5rem;
-    margin-bottom: 24px;
-  }
-
-  .dashboard {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-
-  .statCard {
-    padding: 18px;
-  }
-
-  .statValue {
-    font-size: 1.6rem;
-  }
-
-  .statLabel {
-    font-size: 0.85rem;
-  }
-
-  .tabs {
-    gap: 4px;
-    margin-bottom: 20px;
-  }
-
-  .tab {
-    padding: 8px 14px;
-    font-size: 13px;
-  }
-
-  .sectionTitle {
-    font-size: 1.2rem;
-    margin-bottom: 18px;
-  }
-
-  .productsList {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .productCard {
-    padding: 16px;
-  }
-
-  .productInfo h3 {
-    font-size: 1rem;
-  }
-
-  .productPrice {
-    font-size: 1rem;
-  }
-
-  .productActions {
-    gap: 6px;
-  }
-
-  .productActions button {
-    padding: 6px 12px;
-    font-size: 12px;
-    min-width: 80px;
-  }
-
-  .productForm {
     padding: 20px;
   }
 
   .formRow {
-    gap: 12px;
+    flex-direction: column;
   }
 
-  .formGroup {
-    gap: 4px;
+  .categoryForm {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .formGroup label {
-    font-size: 0.85rem;
-  }
-
-  .formGroup input,
-  .formGroup textarea,
-  .formGroup select {
-    padding: 8px 10px;
-    font-size: 13px;
-  }
-
-  .saveBtn,
-  .cancelBtn {
-    padding: 10px 18px;
-    font-size: 13px;
-  }
-
-  .categoriesList {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .categoryCard {
-    padding: 16px;
-  }
-
-  .categoryInfo h3 {
-    font-size: 1rem;
-  }
-
-  .categoryActions {
-    gap: 6px;
-  }
-
-  .categoryActions button {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-
-  .usersList {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .userCard {
-    padding: 16px;
-  }
-
-  .userInfo h3 {
-    font-size: 1rem;
-  }
-
-  .userInfo p {
-    font-size: 0.85rem;
-  }
-
-  .userActions {
-    gap: 6px;
-  }
-
-  .userActions button {
-    padding: 6px 12px;
-    font-size: 12px;
-    min-width: 90px;
-  }
-
-  .userEditForm input,
-  .userEditForm select {
-    padding: 8px 10px;
-    font-size: 13px;
-  }
-
-  .modalContent {
-    padding: 24px;
-  }
-
-  .modalTitle {
-    font-size: 1.15rem;
-  }
-
-  .modalMessage {
-    font-size: 0.9rem;
+  .categoryForm input {
+    min-width: 100%;
   }
 }
 
-/* Адаптив для 400px и меньше */
-@media (max-width: 400px) {
-  .adminContainer {
-    padding: 16px;
-  }
-
-  .adminTitle {
-    font-size: 1.3rem;
-    margin-bottom: 18px;
-  }
-
-  .dashboard {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .statCard {
-    padding: 14px;
-    border-radius: 8px;
-  }
-
-  .statValue {
-    font-size: 1.4rem;
-  }
-
-  .statLabel {
-    font-size: 0.8rem;
-  }
-
-  .tabs {
-    gap: 3px;
-    margin-bottom: 16px;
-  }
-
-  .tab {
-    padding: 7px 10px;
-    font-size: 12px;
-  }
-
-  .sectionTitle {
-    font-size: 1.1rem;
-    margin-bottom: 14px;
-  }
-
-  .productsList {
-    gap: 12px;
-  }
-
-  .productCard {
-    padding: 12px;
-    border-radius: 8px;
-  }
-
-  .productInfo h3 {
-    font-size: 0.95rem;
-  }
-
-  .productPrice {
-    font-size: 0.95rem;
-  }
-
-  .productActions {
-    gap: 4px;
-  }
-
-  .productActions button {
-    padding: 5px 8px;
-    font-size: 11px;
-    min-width: 60px;
-  }
-
-  .productForm {
-    padding: 14px;
-    border-radius: 8px;
-  }
-
-  .formRow {
-    gap: 10px;
-  }
-
-  .formGroup {
-    gap: 3px;
-  }
-
-  .formGroup label {
-    font-size: 0.8rem;
-  }
-
-  .formGroup input,
-  .formGroup textarea,
-  .formGroup select {
-    padding: 6px 8px;
-    font-size: 12px;
-  }
-
-  .saveBtn,
-  .cancelBtn {
-    padding: 8px 14px;
-    font-size: 12px;
-  }
-
-  .categoriesList {
-    gap: 10px;
-  }
-
-  .categoryCard {
-    padding: 12px;
-    border-radius: 8px;
-  }
-
-  .categoryInfo h3 {
-    font-size: 0.95rem;
-  }
-
-  .categoryInfo p {
-    font-size: 0.8rem;
-  }
-
-  .categoryActions button {
-    padding: 5px 8px;
-    font-size: 11px;
-  }
-
-  .usersList {
-    gap: 12px;
-  }
-
-  .userCard {
-    padding: 12px;
-    border-radius: 8px;
-  }
-
-  .userInfo h3 {
-    font-size: 0.95rem;
-  }
-
-  .userInfo p {
-    font-size: 0.8rem;
-  }
-
-  .userActions button {
-    padding: 5px 8px;
-    font-size: 11px;
-    min-width: 70px;
-  }
-
-  .userEditForm input,
-  .userEditForm select {
-    padding: 6px 8px;
-    font-size: 12px;
-  }
-
-  .successNotification {
-    padding: 12px 18px;
-    font-size: 14px;
-    top: 10px;
-    right: 10px;
-  }
-
-  .modalContent {
-    padding: 20px;
-    width: 95%;
-  }
-
-  .modalTitle {
-    font-size: 1.05rem;
-    margin-bottom: 12px;
-  }
-
-  .modalMessage {
-    font-size: 0.85rem;
-    margin-bottom: 20px;
-  }
-
-  .modalActions {
-    gap: 8px;
-  }
-
-.modalConfirmBtn,
-.modalCancelBtn {
-  padding: 10px 16px;
-  font-size: 13px;
-}
+/* Темная тема доработки */
+html[data-theme="dark"] .searchIcon {
+  filter: invert(0.8);
 }
 
-/* Адаптив для 330px и меньше */
-@media (max-width: 330px) {
-  .adminContainer {
-    padding: 12px;
-  }
+html[data-theme="dark"] .viewIcon {
+  filter: invert(0.8);
+}
 
-  .adminTitle {
-    font-size: 1.2rem;
-    margin-bottom: 14px;
-  }
-
-  .tabs {
-    gap: 2px;
-    margin-bottom: 12px;
-  }
-
-  .tab {
-    padding: 6px 8px;
-    font-size: 11px;
-  }
-
-  .sectionTitle {
-    font-size: 1rem;
-    margin-bottom: 12px;
-  }
-
-  .productsList {
-    gap: 10px;
-  }
-
-  .productCard {
-    padding: 10px;
-  }
-
-  .productInfo h3 {
-    font-size: 0.9rem;
-  }
-
-  .productPrice {
-    font-size: 0.9rem;
-  }
-
-  .productActions button {
-    padding: 4px 6px;
-    font-size: 10px;
-    min-width: 50px;
-  }
-
-  .productForm {
-    padding: 12px;
-  }
-
-  .formGroup input,
-  .formGroup textarea,
-  .formGroup select {
-    padding: 5px 6px;
-    font-size: 11px;
-  }
-
-  .saveBtn,
-  .cancelBtn {
-    padding: 7px 12px;
-    font-size: 11px;
-  }
-
-  .categoriesList {
-    gap: 8px;
-  }
-
-  .categoryCard {
-    padding: 10px;
-  }
-
-  .categoryInfo h3 {
-    font-size: 0.9rem;
-  }
-
-  .categoryActions button {
-    padding: 4px 6px;
-    font-size: 10px;
-  }
-
-  .usersList {
-    gap: 10px;
-  }
-
-  .userCard {
-    padding: 10px;
-  }
-
-  .userInfo h3 {
-    font-size: 0.9rem;
-  }
-
-  .userActions button {
-    padding: 4px 6px;
-    font-size: 10px;
-    min-width: 60px;
-  }
-
-  .userEditForm input,
-  .userEditForm select {
-    padding: 5px 6px;
-    font-size: 11px;
-  }
-
-  .successNotification {
-    padding: 10px 14px;
-    font-size: 13px;
-    top: 8px;
-    right: 8px;
-  }
-
-  .modalContent {
-    padding: 16px;
-    width: 95%;
-  }
-
-  .modalTitle {
-    font-size: 1rem;
-    margin-bottom: 10px;
-  }
-
-  .modalMessage {
-    font-size: 0.8rem;
-    margin-bottom: 16px;
-  }
-
-  .modalConfirmBtn,
-  .modalCancelBtn {
-    padding: 8px 14px;
-    font-size: 12px;
-  }
+html[data-theme="dark"] .viewToggleBtn:hover .viewIcon {
+  filter: invert(0);
 }

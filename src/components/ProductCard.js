@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase';
 import styles from '../pages/Catalog.module.css';
 
-// ✅ Мемоизированная карточка товара - не перерисовывается при фильтрации
+//   Мемоизированная карточка товара - не перерисовывается при фильтрации
 const ProductCard = memo(({ product }) => {
   const navigate = useNavigate();
 
-  // ✅ Предзагрузка товара в кеш при наведении курсора
+  //   Предзагрузка товара в кеш при наведении курсора
   const preloadProduct = useCallback(async () => {
     try {
       await supabase
@@ -15,22 +15,22 @@ const ProductCard = memo(({ product }) => {
         .select('*')
         .eq('id', product.id)
         .single();
-      
-      console.log(`✅ Товар ${product.id} предзагружен`);
+
+      console.log(`  Товар ${product.id} предзагружен`);
     } catch (e) {
       // Тихо игнорируем ошибки предзагрузки
     }
   }, [product.id]);
 
   return (
-    <div 
+    <div
       className={styles.productCard}
       onMouseEnter={preloadProduct}
       onFocus={preloadProduct}
     >
       <div className={styles.imageContainer}>
-        <img 
-          src={product.image_url || 'https://via.placeholder.com/300x200'} 
+        <img
+          src={product.image_url || 'https://via.placeholder.com/300x200'}
           alt={product.name}
           className={styles.productImage}
           loading="lazy"
@@ -55,7 +55,7 @@ const ProductCard = memo(({ product }) => {
             <span className={styles.outOfStock}>Нет в наличии</span>
           )}
         </div>
-        <div 
+        <div
           className={styles.productClickArea}
           onClick={() => navigate(`/product/${product.id}`)}
         />

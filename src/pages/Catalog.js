@@ -25,34 +25,34 @@ const Catalog = () => {
         try {
           const timeoutId = setTimeout(() => abortController.abort(), 10000);
 
-          // ✅ Параллельные запросы - ускоряет загрузку в 2 раза
+          //   Параллельные запросы - ускоряет загрузку в 2 раза
           const [productsRes, categoriesRes] = await Promise.all([
             supabase.from('products').select('*, categories(name)').limit(200).order('created_at', { ascending: false }),
             supabase.from('categories').select('*').order('name')
           ]);
-          
+
           clearTimeout(timeoutId);
 
           if (abortController.signal.aborted) return;
 
           if (productsRes.error) throw productsRes.error;
           if (categoriesRes.error) throw categoriesRes.error;
-          
+
           setProducts(productsRes.data || []);
           setCategories(categoriesRes.data || []);
-          
+
           break;
         } catch (error) {
           if (error.name === 'AbortError') return;
-          
+
           console.error(`Ошибка загрузки, попытка ${attempt + 1}/3`, error);
-          
+
           if (attempt === 2) {
             setProducts([]);
             setCategories([]);
             break;
           }
-          
+
           await new Promise(resolve => setTimeout(resolve, retryDelay(attempt)));
         } finally {
           setLoading(false);
@@ -62,7 +62,7 @@ const Catalog = () => {
 
     fetchData();
 
-    // ✅ Отменяем запрос при размонтировании компонента / быстрой навигации
+    //   Отменяем запрос при размонтировании компонента / быстрой навигации
     return () => abortController.abort();
   }, []);
 
@@ -76,7 +76,7 @@ const Catalog = () => {
   // Поиск по названию
   if (searchQuery.trim()) {
     const query = searchQuery.toLowerCase();
-    filteredProducts = filteredProducts.filter(p => 
+    filteredProducts = filteredProducts.filter(p =>
       p.name?.toLowerCase().includes(query) ||
       p.description?.toLowerCase().includes(query)
     );
@@ -104,7 +104,7 @@ const Catalog = () => {
   return (
     <div className={styles.catalogContainer}>
       <h1 className={styles.title}>Каталог товаров</h1>
-      
+
       <div className={styles.searchAndFilters}>
         <div className={styles.searchWrapper}>
           <img src="/images/ico/icoLupa.png" alt="Поиск" className={styles.searchIcon} />
@@ -116,7 +116,7 @@ const Catalog = () => {
             className={styles.searchInput}
           />
         </div>
-        
+
         <div className={styles.filtersRow}>
           <div className={styles.priceFilter}>
             <input
@@ -141,8 +141,8 @@ const Catalog = () => {
           <div className={styles.ratingFilter}>
             <span>Мин. оценка:</span>
             <div className={styles.ratingStars}>
-              {[1,2,3,4,5].map(rating => (
-                <span 
+              {[1, 2, 3, 4, 5].map(rating => (
+                <span
                   key={rating}
                   className={minRating >= rating ? styles.starActive : styles.star}
                   onClick={() => setMinRating(minRating === rating ? 0 : rating)}
@@ -158,7 +158,7 @@ const Catalog = () => {
       </div>
 
       <div className={styles.categories}>
-        <button 
+        <button
           className={`${styles.categoryBtn} ${!selectedCategory ? styles.active : ''}`}
           onClick={() => setSelectedCategory(null)}
         >
@@ -179,9 +179,9 @@ const Catalog = () => {
         <p className={styles.empty}>Товары не найдены</p>
       ) : (
         <div className={styles.productsGrid}>
-           {filteredProducts.map(product => (
-             <ProductCard key={product.id} product={product} />
-           ))}
+          {filteredProducts.map(product => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
       )}
     </div>

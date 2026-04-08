@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  
 }
 
 .loginPrompt {
@@ -45,7 +46,6 @@
   font-size: 14px;
   transition: border-color 0.2s;
 }
-
 .formGroup textarea {
   max-height: 160px;
   resize: vertical;
@@ -123,6 +123,28 @@
 
 .phoneInputButton {
   border-radius: 4px !important;
+}
+
+/* ✅ Fix Country List Dark Theme */
+:global(.react-phone-input-2 .dropdown-menu) {
+  background-color: var(--bg-primary) !important;
+  border: 1px solid var(--accent-color) !important;
+  color: var(--text-primary) !important;
+}
+
+:global(.react-phone-input-2 .dropdown-menu li) {
+  color: var(--text-primary) !important;
+}
+
+:global(.react-phone-input-2 .dropdown-menu li:hover) {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+}
+
+:global(.react-phone-input-2 .search-container input) {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--accent-color) !important;
 }
 
 /* Модальное окно */

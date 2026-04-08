@@ -534,9 +534,9 @@ html[data-theme="dark"] .loginButton:hover .buttonIcon {
     width: 100%;
     height: auto;
     min-height: 70px;
-    background: #ffffff;
+    background: var(--bg-primary);
     border-right: none;
-    border-top: 2px solid #e2e8f0;
+    border-top: 2px solid var(--border-color);
     padding: 8px 0;
     z-index: 1000;
     flex-direction: row;
@@ -745,14 +745,14 @@ html[data-theme="dark"] .loginButton:hover .buttonIcon {
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
-    background: #ffffff;
-    border: 2px solid #e2e8f0;
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
     border-radius: 12px;
     padding: 8px 0;
     gap: 0;
     z-index: 1001;
     min-width: 180px;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 -4px 20px var(--shadow-color);
     margin-bottom: 8px;
   }
 

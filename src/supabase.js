@@ -1,18 +1,21 @@
 import { createClient } from '@supabase/supabase-js'
 
-// ✅ Новый вариант через локальный прокси Vercel (обходит любые блокировки)
-const supabaseUrl = '/api/supabase-proxy'
-const supabaseKey = 'sb_publishable_oyu0Kmel3M15Am53sI_tzg_dZws5Hds'
-
-// ❌ Старый вариант прямого подключения (оставлен на всякий случай)
-// const supabaseUrl = 'https://mutebkvjowivxupnexzp.supabase.co'
+// ❌ Новый вариант через локальный прокси Vercel (обходит любые блокировки)
+// const supabaseUrl = '/api/supabase-proxy'
 // const supabaseKey = 'sb_publishable_oyu0Kmel3M15Am53sI_tzg_dZws5Hds'
 
-// ✅ Резервные домены для обхода блокировок
+// ✅ Старый вариант прямого подключения, пока Supabase не поправят валидацию
+const supabaseUrl = 'https://mutebkvjowivxupnexzp.supabase.co'
+const supabaseKey = 'sb_publishable_oyu0Kmel3M15Am53sI_tzg_dZws5Hds'
+
+// ✅ Актуальные рабочие зеркала Supabase апрель 2026
 const FALLBACK_DOMAINS = [
-  'aws.supabase.co',
-  'supabase.co',
-  'c01.supabase.co'
+  'supabase.com',
+  'sg.supabase.co',
+  'in.supabase.co', 
+  'us-west-2.aws.supabase.co',
+  'ap-southeast-1.aws.supabase.co',
+  'supabase-proxy.vercel.app'
 ]
 
 let currentDomainIndex = 0
@@ -130,28 +133,34 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
         globalCache.delete(cacheKey)
       }
 
-      // ✅ Пробуем все резервные домены по порядку
-      for (let i = currentDomainIndex; i < FALLBACK_DOMAINS.length; i++) {
-        try {
-          const url = originalUrl.replace('supabase.co', FALLBACK_DOMAINS[i])
-          const response = await fetch(url, { ...options, signal: AbortSignal.timeout(7000) })
-          const data = await response.clone().json()
-          
-          // Сохраняем в кеш с соответствующим TTL
-          const ttl = CACHE_TTL[tableName] || CACHE_TTL.default
-          globalCache.set(cacheKey, {
-            data,
-            expires: Date.now() + ttl
-          })
-          
-          // Запоминаем рабочий домен для следующих запросов
-          currentDomainIndex = i
-          
-          return response
-        } catch (e) {
-          console.log(`Домен ${FALLBACK_DOMAINS[i]} недоступен, пробуем следующий`)
-          currentDomainIndex = (i + 1) % FALLBACK_DOMAINS.length
-        }
+      // ✅ Параллельные запросы на все домены одновременно
+      const requests = FALLBACK_DOMAINS.map((domain, index) => 
+        fetch(originalUrl.replace('supabase.co', domain), {
+          ...options,
+          signal: AbortSignal.timeout(index < 3 ? 6000 : 10000)
+        }).catch(() => null)
+      )
+
+      // ✅ Ждём первый успешный ответ
+      const responses = await Promise.allSettled(requests)
+      const successIndex = responses.findIndex(r => r.status === 'fulfilled' && r.value.ok)
+
+      if (successIndex !== -1) {
+        const response = responses[successIndex].value
+        const data = await response.clone().json()
+        
+        // Сохраняем в кеш
+        const ttl = CACHE_TTL[tableName] || CACHE_TTL.default
+        globalCache.set(cacheKey, {
+          data,
+          expires: Date.now() + ttl
+        })
+        
+        // Запоминаем самый быстрый рабочий домен
+        currentDomainIndex = successIndex
+        
+        console.log(`✅ Ответил домен ${FALLBACK_DOMAINS[successIndex]} за ${successIndex} позицией`)
+        return response
       }
 
       // ✅ Если все домены упали - возвращаем даже устаревший кеш

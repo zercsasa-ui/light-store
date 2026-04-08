@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: var(--bg-secondary);
   position: relative;
   padding: 20px;
 }
@@ -14,13 +14,13 @@
   top: 20px;
   left: 20px;
   padding: 10px 20px;
-  background: white;
-  border: 2px solid #141414;
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
   border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  color: #141414;
+  color: var(--text-primary);
   transition: all 0.3s ease;
 }
 
@@ -32,11 +32,11 @@
 }
 
 .authCard {
-  background: white;
+  background: var(--bg-primary);
   padding: 40px;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(20, 20, 20, 0.08);
-  border: 2px solid #141414;
+  box-shadow: 0 8px 24px var(--shadow-color);
+  border: 2px solid var(--border-color);
   width: 100%;
   max-width: 420px;
 }
@@ -44,7 +44,7 @@
 .authTitle {
   text-align: center;
   margin: 0 0 30px 0;
-  color: #141414;
+  color: var(--text-primary);
   font-size: 1.8rem;
   font-weight: 600;
 }
@@ -63,17 +63,18 @@
 
 .formGroup label {
   font-weight: 500;
-  color: #141414;
+  color: var(--text-primary);
   font-size: 0.95rem;
 }
 
 .formGroup input {
   padding: 12px 16px;
-  border: 1px solid #141414;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 14px;
   transition: all 0.2s ease;
-  background: white;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .formGroup input:focus {
@@ -83,7 +84,7 @@
 }
 
 .formGroup input::placeholder {
-  color: #a3a3a3;
+  color: var(--text-secondary);
 }
 
 .authButton {
@@ -115,14 +116,14 @@
 .authSwitch {
   text-align: center;
   margin-top: 24px;
-  color: #525252;
+  color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
 .authSwitch button {
   background: none;
   border: none;
-  color: #141414;
+  color: var(--text-primary);
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 600;

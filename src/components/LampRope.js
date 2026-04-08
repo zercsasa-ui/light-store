@@ -237,6 +237,29 @@ const LampRope = () => {
   }, [isAttached, isLocked]);
 
   return (
+    <>
+    {window.innerWidth <= 720 ? (
+      <div
+        onClick={() => {
+          const current = document.documentElement.getAttribute('data-theme');
+          document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        }}
+        style={{
+          position: 'fixed',
+          top: '15px',
+          right: '15px',
+          zIndex: '9999',
+          width: '40px',
+          height: '40px',
+          cursor: 'pointer',
+          backgroundColor: 'var(--text-primary)',
+          maskImage: 'url(/images/ico/lampTheme.png)',
+          maskSize: 'contain',
+          WebkitMaskImage: 'url(/images/ico/lampTheme.png)',
+          WebkitMaskSize: 'contain'
+        }}
+      />
+    ) : (
     <div style={{
       position: 'fixed',
       top: '0px',
@@ -308,6 +331,8 @@ const LampRope = () => {
 
       <canvas ref={canvasRef} width="90" height="250" style={{ pointerEvents: 'none' }} />
     </div>
+    )}
+    </>
   );
 };
 

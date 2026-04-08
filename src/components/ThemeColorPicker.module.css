@@ -126,8 +126,7 @@
 
 @media (max-width: 720px) {
   .pickerContainer {
-    bottom: 88px;
-    left: 16px;
+    display: none;
   }
 }
 

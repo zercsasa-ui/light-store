@@ -217,7 +217,7 @@
 }
 
 .aboutText {
-  color: rgba(245, 245, 245, 0.8);
+  color: var(--text-secondary);
   line-height: 1.7;
   margin: 0 0 20px 0;
   font-size: 1.05rem;

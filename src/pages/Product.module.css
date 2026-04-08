@@ -3,6 +3,8 @@
   padding: 122px 24px 24px 64px;
   max-width: 1600px;
   margin: 0 auto;
+  background: var(--bg-primary);
+  min-height: 100vh;
 }
 
 .backBtn {
@@ -17,6 +19,7 @@
   cursor: pointer;
   transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1), all 0.3s ease;
   z-index: 11199;
+  filter: var(--back-btn-filter, none);
 }
 
 .backBtnCollapsed {
@@ -31,6 +34,7 @@
   width: 100%;
   height: 140%;
   transform: rotate(180deg);
+  color: transparent;
 }
 
 
@@ -50,14 +54,11 @@
   width: 100%;
   aspect-ratio: 4/3;
   object-fit: contain;
-  background: #f8fafc;
+  background: var(--bg-secondary);
   border-radius: 16px;
   padding: 48px;
   transition: transform 0.3s ease;
-}
-
-body[data-theme="dark"] .productMainImage {
-  background: #1e293b;
+  cursor: zoom-in;
 }
 
 .productMainImage:hover {
@@ -75,7 +76,7 @@ body[data-theme="dark"] .productMainImage {
 .productTitle {
   font-size: 1.75rem;
   font-weight: 600;
-  color: #141414;
+  color: var(--text-primary);
   line-height: 1.25;
   margin: 0;
   letter-spacing: -0.02em;
@@ -91,8 +92,8 @@ body[data-theme="dark"] .productMainImage {
 
 .categoryTag {
   padding: 6px 14px;
-  background: #f1f5f9;
-  color: #475569;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
   border-radius: 20px;
   font-size: 13px;
   font-weight: 500;
@@ -104,7 +105,7 @@ body[data-theme="dark"] .productMainImage {
 }
 
 .ratingCount {
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 14px;
   margin-left: 6px;
 }
@@ -112,14 +113,14 @@ body[data-theme="dark"] .productMainImage {
 .productDescription {
   font-size: 15px;
   line-height: 1.7;
-  color: #64748b;
+  color: var(--text-secondary);
   margin: 0;
 }
 
 .productPriceBlock {
   padding: 24px 0;
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .priceRow {
@@ -132,7 +133,7 @@ body[data-theme="dark"] .productMainImage {
 .productPrice {
   font-size: 2.2rem;
   font-weight: 700;
-  color: #141414;
+  color: var(--text-primary);
   line-height: 1;
 }
 
@@ -167,9 +168,9 @@ body[data-theme="dark"] .productMainImage {
 .requestBtn {
   width: 100%;
   padding: 16px 24px;
-  background: #141414;
-  color: white;
-  border: 2px solid #141414;
+  background: var(--accent-color);
+  color: var(--bg-primary);
+  border: 2px solid var(--accent-color);
   border-radius: 12px;
   font-size: 16px;
   font-weight: 600;
@@ -178,10 +179,10 @@ body[data-theme="dark"] .productMainImage {
 }
 
 .requestBtn:hover:not(:disabled) {
-  background: #333333;
-  border-color: #333333;
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(20, 20, 20, 0.15);
+  box-shadow: 0 10px 25px var(--shadow-color);
 }
 
 .requestBtn:active {
@@ -189,16 +190,10 @@ body[data-theme="dark"] .productMainImage {
 }
 
 .requestBtn:disabled {
-  background: #94a3b8;
-  border-color: #94a3b8;
+  background: var(--text-secondary);
+  border-color: var(--text-secondary);
   cursor: not-allowed;
-}
-
-.productInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding-top: 8px;
+  opacity: 0.6;
 }
 
 .infoRow {
@@ -209,17 +204,17 @@ body[data-theme="dark"] .productMainImage {
 
 .infoLabel {
   min-width: 100px;
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
 .infoValue {
-  color: #141414;
+  color: var(--text-primary);
   font-weight: 500;
 }
 
 .ratingBlock {
   padding: 16px;
-  background: #f8fafc;
+  background: var(--bg-secondary);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -229,7 +224,7 @@ body[data-theme="dark"] .productMainImage {
 .ratingLabel {
   margin: 0;
   font-weight: 500;
-  color: #141414;
+  color: var(--text-primary);
   font-size: 13px;
 }
 
@@ -240,7 +235,7 @@ body[data-theme="dark"] .productMainImage {
 
 .userStar {
   font-size: 24px;
-  color: #e2e8f0;
+  color: var(--border-color);
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -264,8 +259,8 @@ body[data-theme="dark"] .productMainImage {
 .submitRatingBtn {
   align-self: flex-start;
   padding: 8px 16px;
-  background: #141414;
-  color: white;
+  background: var(--accent-color);
+  color: var(--bg-primary);
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -275,13 +270,13 @@ body[data-theme="dark"] .productMainImage {
 }
 
 .submitRatingBtn:hover {
-  background: #333333;
+  background: var(--accent-hover);
 }
 
 .productMetaInfo {
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -293,12 +288,12 @@ body[data-theme="dark"] .productMainImage {
 }
 
 .productMetaInfo .infoLabel {
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 13px;
 }
 
 .productMetaInfo .infoValue {
-  color: #141414;
+  color: var(--text-primary);
   font-weight: 600;
   font-size: 13px;
 }
@@ -306,7 +301,7 @@ body[data-theme="dark"] .productMainImage {
 .loading {
   text-align: center;
   padding: 120px 20px;
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
@@ -326,24 +321,20 @@ body[data-theme="dark"] .productMainImage {
 }
 
 .successModalContent {
-  background: white;
+  background: var(--bg-secondary);
   padding: 16px 24px;
   border-radius: 8px;
-  border: 2px solid #141414;
-  box-shadow: 0 8px 24px rgba(20, 20, 20, 0.15);
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 8px 24px var(--shadow-color);
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.successIcon {
-  font-size: 24px;
-}
-
 .successText {
   margin: 0;
   font-weight: 600;
-  color: #141414;
+  color: var(--text-primary);
 }
 
 @keyframes slideInRight {
@@ -355,21 +346,6 @@ body[data-theme="dark"] .productMainImage {
   to {
     opacity: 1;
     transform: translateX(0);
-  }
-}
-
-@media (max-width: 992px) {
-  .productPage {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-
-  .productImageWrapper {
-    position: static;
-  }
-
-  .productDetails {
-    position: static;
   }
 }
 
@@ -452,130 +428,108 @@ body[data-theme="dark"] .productMainImage {
   }
 }
 
-/* 🔴 ТЁМНАЯ ТЕМА */
-body[data-theme="dark"] .productTitle {
-  color: #f1f5f9;
+/* Похожие товары и история просмотров */
+.relatedSection {
+  margin-top: 80px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border-color);
 }
 
-body[data-theme="dark"] .categoryTag {
-  background: #334155;
-  color: #cbd5e1;
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 32px;
 }
 
-body[data-theme="dark"] .productDescription {
-  color: #94a3b8;
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
 }
 
-body[data-theme="dark"] .productPriceBlock {
-  border-top-color: #334155;
-  border-bottom-color: #334155;
+.productCard {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
 }
 
-body[data-theme="dark"] .productPrice {
-  color: #f1f5f9;
+.productCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px var(--shadow-color);
 }
 
-body[data-theme="dark"] .requestBtn {
-  background: #f1f5f9;
-  color: #0f172a;
-  border-color: #f1f5f9;
+.imageContainer {
+  height: 160px;
+  overflow: hidden;
+  background: var(--bg-tertiary);
 }
 
-body[data-theme="dark"] .requestBtn:hover:not(:disabled) {
-  background: #e2e8f0;
-  border-color: #e2e8f0;
-  box-shadow: 0 10px 25px rgba(241, 245, 249, 0.15);
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-body[data-theme="dark"] .infoLabel {
-  color: #64748b;
+.productCard:hover .productImage {
+  transform: scale(1.05);
 }
 
-body[data-theme="dark"] .infoValue {
-  color: #f1f5f9;
+.cardInfo {
+  padding: 16px;
 }
 
-body[data-theme="dark"] .ratingBlock {
-  background: #1e293b;
+.cardName {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-body[data-theme="dark"] .ratingLabel {
-  color: #f1f5f9;
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-body[data-theme="dark"] .userStar {
-  color: #475569;
+.cardPrice {
+  font-weight: 600;
+  color: #0d9488;
+  font-size: 1.1rem;
 }
 
-body[data-theme="dark"] .submitRatingBtn {
-  background: #f1f5f9;
-  color: #0f172a;
+.cardRating {
+  color: #fbbf24;
+  font-size: 14px;
 }
 
-body[data-theme="dark"] .productMetaInfo {
-  border-top-color: #334155;
-}
-
-body[data-theme="dark"] .relatedSection {
-  border-top-color: #334155;
-}
-
-body[data-theme="dark"] .sectionTitle {
-  color: #f1f5f9;
-}
-
-body[data-theme="dark"] .productCard {
-  background: #1e293b;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-body[data-theme="dark"] .productCard:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-}
-
-body[data-theme="dark"] .imageContainer {
-  background: #334155;
-}
-
-body[data-theme="dark"] .cardName {
-  color: #f1f5f9;
-}
-
-body[data-theme="dark"] .successModalContent {
-  background: #1e293b;
-  border-color: #f1f5f9;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-}
-
-body[data-theme="dark"] .successText {
-  color: #f1f5f9;
-}
-
-body[data-theme="dark"] .productContainer {
-  background: #0f172a;
-}
-
-body[data-theme="dark"] .ratingBlock {
-  background: #1e293b;
-}
-
-body[data-theme="dark"] .relatedSection {
-  border-top-color: #334155;
-}
-
-body[data-theme="dark"] .sectionTitle {
-  color: #f1f5f9;
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
+/* Адаптив */
+@media (max-width: 992px) {
+  .productPage {
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
 
-  to {
-    opacity: 1;
-    transform: scale(1);
+  .productImageWrapper {
+    position: static;
+  }
+
+  .productDetails {
+    position: static;
+  }
+
+  .productsGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -615,97 +569,6 @@ body[data-theme="dark"] .sectionTitle {
   }
 }
 
-/* Похожие товары и история просмотров */
-.relatedSection {
-  margin-top: 80px;
-  padding-top: 40px;
-  border-top: 1px solid #e2e8f0;
-}
-
-.sectionTitle {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #141414;
-  margin-bottom: 32px;
-}
-
-.productsGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-}
-
-.productCard {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  position: relative;
-}
-
-.productCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
-.imageContainer {
-  height: 160px;
-  overflow: hidden;
-  background: #f8fafc;
-}
-
-.productImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.productCard:hover .productImage {
-  transform: scale(1.05);
-}
-
-.cardInfo {
-  padding: 16px;
-}
-
-.cardName {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #141414;
-  margin: 0 0 12px 0;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.cardFooter {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.cardPrice {
-  font-weight: 600;
-  color: #0d9488;
-  font-size: 1.1rem;
-}
-
-.cardRating {
-  color: #fbbf24;
-  font-size: 14px;
-}
-
-@media (max-width: 992px) {
-  .productsGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 576px) {
   .productsGrid {
     grid-template-columns: 1fr;
@@ -716,3 +579,16 @@ body[data-theme="dark"] .sectionTitle {
     padding-top: 24px;
   }
 }
+
+/* Темная тема - только специальные доработки */
+html[data-theme="dark"] .backBtn {
+  filter: invert(1) brightness(0.9);
+}
+
+html[data-theme="dark"] .requestBtn {
+  color: #0f172a;
+}
+
+html[data-theme="dark"] .submitRatingBtn {
+  color: #0f172a;
+} 

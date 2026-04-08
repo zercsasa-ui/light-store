@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { preloadCatalog } from '../supabase';
 import styles from './MainSidebar.module.css';
 
 const MainSidebar = ({ isCollapsed, setIsCollapsed }) => {
@@ -90,6 +91,8 @@ const MainSidebar = ({ isCollapsed, setIsCollapsed }) => {
           <li>
             <NavLink
               to="/catalog"
+              onMouseEnter={() => preloadCatalog()}
+              onFocus={() => preloadCatalog()}
               className={({ isActive }) => isActive ? `${styles.sidebarLink} ${styles.sidebarLinkActive}` : styles.sidebarLink}
             >
               <img src="/images/ico/icoCatalog.png" alt="" className={styles.linkIcon} />

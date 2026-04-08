@@ -11,8 +11,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #ffffff;
-  color: #141414;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+    overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* Полностью скрываем скролбар, прокрутка остаётся работать */
+::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 /* Глобальный стиль фокуса для всех инпутов */

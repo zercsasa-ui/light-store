@@ -3,6 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
+  <script>
+    try {
+      const savedTheme = localStorage.getItem('lamp_attached') === 'true' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      if (savedTheme === 'dark') {
+        document.querySelector('meta[name="theme-color"]').content = '#0f172a';
+      }
+    } catch(e) {}
+  </script>
   <title>Интернет-магазин светотехники</title>
 </head>
 <body>

@@ -1,0 +1,144 @@
+.pickerContainer {
+  position: fixed;
+  top: 22%;
+  right: -50px;
+  transform: translateY(-50%);
+  z-index: 100;
+  transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pickerContainer.visible {
+  right: -20px;
+}
+.pickerContainer.visible:hover{
+    right: 0px;
+}
+
+
+.toggleBtn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-color) 0 4px 16px;
+}
+
+.toggleBtn:hover {
+  transform: scale(1.1);
+
+}
+
+.pickerPanel {
+  position: absolute;
+  top: 270%;
+  right: 60px;
+  transform: translateY(-50%) translateX(10px);
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: 12px 0 0 12px;
+  padding: 20px;
+  min-width: 260px;
+  box-shadow: var(--shadow-color) 0 8px 32px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.open .pickerPanel {
+  transform: translateY(-50%) translateX(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.title {
+  margin: 0 0 16px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.colorRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.colorInput {
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+}
+
+.colorCode {
+  font-family: monospace;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.previewRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.previewItem {
+  flex: 1;
+  height: 40px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.resetBtn {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.resetBtn:hover {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+@media (max-width: 720px) {
+  .pickerContainer {
+    bottom: 88px;
+    left: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pickerContainer {
+    bottom: 82px;
+    left: 12px;
+  }
+
+  .pickerPanel {
+    left: auto;
+    right: 0;
+  }
+}

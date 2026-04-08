@@ -5,8 +5,8 @@
   left: 0;
   width: 260px;
   height: 100vh;
-  background: #ffffff;
-  border-right: 2px solid #e2e8f0;
+  background: var(--bg-primary);
+  border-right: 2px solid var(--border-color);
   padding: 32px 0 32px;
   z-index: 1000;
   overflow: hidden;
@@ -41,7 +41,7 @@
 }
 
 .toggleButton:hover {
-scale: 1.1;
+  scale: 1.1;
   color: #0d9488;
 }
 
@@ -57,7 +57,7 @@ scale: 1.1;
 
 .sidebarHeader {
   padding: 0 24px 24px;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid var(--border-color);
   margin-bottom: 24px;
   position: relative;
   min-height: 100px;
@@ -67,7 +67,7 @@ scale: 1.1;
   margin: 0 0 16px 0;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--text-primary);
   letter-spacing: -0.3px;
   transition: opacity 0.25s ease 0.05s;
   opacity: 1;
@@ -104,7 +104,7 @@ scale: 1.1;
 
 .userInfo {
   padding-top: 16px;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--border-color);
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
@@ -119,27 +119,27 @@ scale: 1.1;
   display: block;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .userRole {
   display: block;
   font-size: 0.8rem;
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .guestInfo {
   padding-top: 16px;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--border-color);
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .guestText {
   display: block;
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
@@ -163,7 +163,7 @@ scale: 1.1;
   align-items: center;
   gap: 14px;
   padding: 16px 24px;
-  color: #475569;
+  color: var(--text-secondary);
   text-decoration: none;
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   border-left: 2px solid transparent;
@@ -193,13 +193,13 @@ scale: 1.1;
 }
 
 .sidebarLink:hover {
-  background-color: #f8fafc;
-  color: #0f172a;
-  border-left-color: #e2e8f0;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-left-color: var(--border-color);
 }
 
 .sidebarLinkActive {
-  background-color: #f8fafc;
+  background-color: var(--bg-secondary);
   color: #0d9488;
   border-left-color: #0d9488;
   font-weight: 600;
@@ -229,14 +229,24 @@ scale: 1.1;
   width: 22px;
   height: 22px;
   flex-shrink: 0;
+  filter: invert(0);
+  transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-theme="dark"] .linkIcon {
+  filter: invert(1);
+}
+
+html[data-theme="dark"] .logoIcon {
+  filter: invert(1);
 }
 
 .sidebarFooter {
   padding: 24px;
   padding-bottom: 0;
-  border-top: 2px solid #e2e8f0;
+  border-top: 2px solid var(--border-color);
   margin-top: auto;
-  background: #ffffff;
+  background: var(--bg-primary);
   transition: padding 0.3s ease;
 }
 
@@ -272,10 +282,24 @@ scale: 1.1;
   transform: translateY(-1px);
 }
 
+html[data-theme="dark"] .logoutButton:hover {
+  background: rgba(220, 38, 38, 0.15);
+}
+
+html[data-theme="dark"] .logoutButton:hover .buttonIcon {
+  filter: brightness(0) saturate(100%) invert(25%) sepia(95%) saturate(2963%) hue-rotate(347deg) brightness(92%) contrast(91%);
+}
+
 .buttonIcon {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
+  filter: invert(0);
+  transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-theme="dark"] .buttonIcon {
+  filter: invert(1);
 }
 
 .loginButton {
@@ -303,6 +327,14 @@ scale: 1.1;
   background: #f0fdfa;
   border-color: #5eead4;
   transform: translateY(-1px);
+}
+
+html[data-theme="dark"] .loginButton:hover {
+  background: rgba(13, 148, 136, 0.15);
+}
+
+html[data-theme="dark"] .loginButton:hover .buttonIcon {
+  filter: brightness(0) saturate(100%) invert(40%) sepia(92%) saturate(1095%) hue-rotate(142deg) brightness(96%) contrast(91%);
 }
 
 .mainContent {
@@ -396,16 +428,22 @@ scale: 1.1;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideIn {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(-20px);
   }
-  to { 
+
+  to {
     opacity: 1;
     transform: translateY(0);
   }
@@ -471,12 +509,15 @@ scale: 1.1;
   .sidebar {
     width: 240px;
   }
+
   .mainContent {
     margin-left: 240px;
   }
+
   .sidebarCollapsed {
     width: 78px;
   }
+
   .mainContentCollapsed {
     margin-left: 78px;
   }
@@ -573,7 +614,7 @@ scale: 1.1;
     border: none;
     border-radius: 8px;
     font-size: 0.7rem;
-  
+
     min-width: 60px;
     display: flex;
   }
@@ -754,7 +795,7 @@ scale: 1.1;
     justify-content: flex-start;
     padding: 12px 16px;
     min-width: auto;
-   
+
     gap: 12px;
     width: 100%;
     border-radius: 0;

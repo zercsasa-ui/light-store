@@ -1,11 +1,13 @@
 .requestsContainer {
   padding: 50px;
+  background-color: var(--bg-primary);
+  transition: background-color 0.3s ease;
 }
 
 .title {
   font-size: 2rem;
   margin-bottom: 30px;
-  color: #141414;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -24,11 +26,11 @@
 
 .formSection,
 .requestsList {
-  background: white;
+  background: var(--bg-primary);
   border-radius: 12px;
   padding: 32px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  border: 2px solid #141414;
+  box-shadow: 0 8px 24px var(--shadow-color);
+  border: 2px solid var(--accent-color);
   border-bottom: none;
   border-top: none;
 }
@@ -37,7 +39,7 @@
 .listTitle {
   font-size: 1.3rem;
   margin-bottom: 24px;
-  color: #141414;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -48,40 +50,46 @@
   gap: 8px;
   margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .searchInput {
   flex: 2;
   min-width: 160px;
   padding: 8px 12px;
-  border: 1px solid #141414;
+  border: 1px solid var(--accent-color);
   border-radius: 6px;
   font-size: 13px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .dateInput {
   min-width: 110px;
   padding: 8px 10px;
-  border: 1px solid #141414;
+  border: 1px solid var(--accent-color);
   border-radius: 6px;
   font-size: 13px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .statusFilter {
   min-width: 120px;
   padding: 8px 10px;
-  border: 1px solid #141414;
+  border: 1px solid var(--accent-color);
   border-radius: 6px;
   font-size: 13px;
-  background: white;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   cursor: pointer;
 }
 
 .clearFiltersBtn {
   padding: 8px 14px;
   background: transparent;
-  border: 1px solid #141414;
+  border: 1px solid var(--accent-color);
+  color: var(--text-primary);
   border-radius: 6px;
   font-size: 13px;
   cursor: pointer;
@@ -89,8 +97,8 @@
 }
 
 .clearFiltersBtn:hover {
-  background: #141414;
-  color: white;
+  background: var(--accent-color);
+  color: var(--bg-primary);
 }
 
 .requests {
@@ -107,12 +115,12 @@
 }
 
 .requests::-webkit-scrollbar-track {
-  background: #f1f3f5;
+  background: var(--bg-secondary);
   border-radius: 3px;
 }
 
 .requests::-webkit-scrollbar-thumb {
-  background: #141414;
+  background: var(--accent-color);
   border-radius: 3px;
 }
 
@@ -121,7 +129,7 @@
 }
 
 .requestCard {
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
   max-width: 100%;
   border-radius: 10px;
   padding: 20px;
@@ -129,9 +137,9 @@
 }
 
 .requestCard:hover {
-  border-color: #141414;
+  border-color: var(--accent-color);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(20, 20, 20, 0.08);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .requestHeader {
@@ -142,7 +150,7 @@
 }
 
 .requestDate {
-  color: #525252;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   font-weight: 500;
 }
@@ -186,7 +194,7 @@
 }
 
 .requestMessage {
-  color: #141414;
+  color: var(--text-primary);
   margin: 0 0 8px;
   white-space: pre-wrap;
   font-weight: 500;
@@ -219,14 +227,14 @@
 }
 
 .requestPhone {
-  color: #525252;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   margin: 0 0 12px;
   font-weight: 500;
 }
 
 .adminResponse {
-  background: #f8fafc;
+  background: var(--bg-secondary);
   border-radius: 8px;
   padding: 16px;
   margin-top: 16px;
@@ -234,13 +242,13 @@
 }
 
 .adminResponse strong {
-  color: #141414;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
 .adminResponse p {
   margin: 8px 0 0;
-  color: #525252;
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
@@ -318,16 +326,16 @@
 .empty {
   text-align: center;
   padding: 60px 20px;
-  color: #525252;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .confirmedSection {
-  background: #ffffff;
+  background: var(--bg-primary);
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  border: 2px solid #141414;
+  box-shadow: 0 8px 24px var(--shadow-color);
+  border: 2px solid var(--accent-color);
   border-bottom: none;
   border-top: none;
 }
@@ -335,13 +343,13 @@
 .confirmedTitle {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #141414;
+  color: var(--text-primary);
   margin: 0 0 12px 0;
 }
 
 .confirmedCount {
   font-size: 0.95rem;
-  color: #525252;
+  color: var(--text-secondary);
   margin-bottom: 16px;
 }
 
@@ -354,9 +362,11 @@
   width: 100%;
   padding: 8px 12px;
   margin-bottom: 16px;
-  border: 1px solid #141414;
+  border: 1px solid var(--accent-color);
   border-radius: 6px;
   font-size: 13px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   box-sizing: border-box;
 }
 
@@ -374,15 +384,15 @@
 }
 
 .confirmedList::-webkit-scrollbar-thumb {
-  background: #141414;
+  background: var(--accent-color);
   border-radius: 4px;
 }
 
 .confirmedItem {
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 16px;
-  background: #ffffff;
+  background: var(--bg-primary);
 }
 
 .confirmedItemHeader {
@@ -394,13 +404,13 @@
 
 .confirmedItemHeader span {
   font-size: 0.85rem;
-  color: #525252;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .confirmedItemText {
   margin: 0 0 12px 0;
-  color: #141414;
+  color: var(--text-primary);
   font-size: 0.9rem;
   line-height: 1.4;
 }
@@ -408,7 +418,7 @@
 .emptySmall {
   text-align: center;
   padding: 40px 20px;
-  color: #525252;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 

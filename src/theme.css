@@ -1,0 +1,32 @@
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --text-primary: #141414;
+  --text-secondary: #475569;
+  --border-color: #e2e8f0;
+  --shadow-color: rgba(20, 20, 20, 0.15);
+  --accent-color: #0f172a;
+  --accent-hover: #1e293b;
+}
+
+html[data-theme="dark"] {
+  --bg-primary: var(--dark-primary, #0f172a);
+  --bg-secondary: var(--dark-secondary, #1e293b);
+  --bg-tertiary: var(--dark-tertiary, #334155);
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --border-color: var(--dark-tertiary, #334155);
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --accent-color: #f8fafc;
+  --accent-hover: #e2e8f0;
+}
+
+* {
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              fill 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              stroke 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}

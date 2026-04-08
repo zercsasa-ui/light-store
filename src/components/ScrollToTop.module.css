@@ -28,6 +28,16 @@
   box-shadow: 0 8px 24px rgba(13, 148, 136, 0.3);
 }
 
+html[data-theme="dark"] .scrollTopBtn {
+  border-color: #5eead4;
+  color: #5eead4;
+}
+
+html[data-theme="dark"] .scrollTopBtn:hover {
+  background: #0d9488;
+  color: #ffffff;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 0.4; transform: translateY(0); }

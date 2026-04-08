@@ -252,13 +252,36 @@ const Product = ({ isSidebarCollapsed }) => {
 
   {showImageModal && (
     <div className={styles.imageModal} onClick={() => setShowImageModal(false)}>
-      <button className={styles.imageModalClose} onClick={() => setShowImageModal(false)}>×</button>
-      <img 
-        src={product.image_url || 'https://via.placeholder.com/600x400'} 
-        alt={product.name}
-        className={styles.imageModalImage}
-        onClick={(e) => e.stopPropagation()}
-      />
+
+      <button
+        className={`${styles.imageModalBtn} ${styles.imageModalPrev}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          // Тут можно будет добавить переключение между фото товара
+        }}
+      >
+        ←
+      </button>
+
+      <div className={styles.imageModalImage} onClick={(e) => e.stopPropagation()}>
+        <img 
+          src={product.image_url || 'https://via.placeholder.com/600x400'} 
+          alt={product.name}
+        />
+      </div>
+
+      <button
+        className={`${styles.imageModalBtn} ${styles.imageModalNext}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          // Тут можно будет добавить переключение между фото товара
+        }}
+      >
+        →
+      </button>
+
+      <button className={styles.imageModalClose} onClick={() => setShowImageModal(false)}>✕</button>
+
     </div>
   )}
 

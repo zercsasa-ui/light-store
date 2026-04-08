@@ -372,42 +372,70 @@
 .imageModal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.9);
-  z-index: 9999;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  animation: fadeIn 0.2s ease;
+  animation: fadeIn 0.3s ease;
+}
+
+.imageModalImage {
+  max-width: 85vw;
+  max-height: 85vh;
+  position: relative;
+}
+
+.imageModalImage img {
+  max-width: 100%;
+  max-height: 85vh;
+  border-radius: 8px;
 }
 
 .imageModalClose {
   position: absolute;
-  top: 24px;
-  right: 24px;
-  width: 48px;
-  height: 48px;
-  background: #141414;
-  border: 2px solid #ffffff;
-  border-radius: 0;
+  top: 30px;
+  right: 30px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.imageModalBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
   color: white;
   font-size: 24px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 300;
+  transition: all 0.2s ease;
+}
+
+.imageModalBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.imageModalPrev {
+  left: 30px;
+}
+
+.imageModalNext {
+  right: 30px;
 }
 
 .imageModalClose:hover {
-  background: #ffffff;
-  color: #141414;
-}
-
-.imageModalImage {
-  max-width: 90vw;
-  max-height: 90vh;
-  object-fit: contain;
-  cursor: default;
-  animation: scaleIn 0.2s ease;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 @keyframes fadeIn {

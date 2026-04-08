@@ -116,7 +116,7 @@ const Home = () => {
               <div className={styles.gallerySmall} onClick={() => galleryOpen ? (() => { setCurrentImage(2); setLightboxOpen(true); })() : setGalleryOpen(true)}>
                 <img src={previewImages[2]} alt="Наш склад" />
                 <div className={styles.galleryCount}>
-                  +{galleryImages.length - 3} фото
+                  +{galleryImages.length} фото
                 </div>
               </div>
             </div>

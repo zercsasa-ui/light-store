@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import MainSidebar from './components/MainSidebar';
 import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from './components/ProtectedRoute';
+import LampRope from './components/LampRope';
+import ThemeColorPicker from './components/ThemeColorPicker';
 import styles from './components/MainSidebar.module.css';
 import Home from './pages/Home';
 import Catalog from './pages/Catalog';
@@ -11,6 +13,7 @@ import Auth from './pages/Auth';
 import Requests from './pages/Requests';
 import Admin from './pages/Admin';
 import Product from './pages/Product';
+
 
 function App() {
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -25,6 +28,13 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
+      
+      {/* Физическая верёвочка с лампочкой */}
+      <LampRope />
+
+      {/* Временная панель выбора цвета темы */}
+      <ThemeColorPicker />
+      
       <Routes>
         <Route path="/auth" element={<Auth />} />
 

@@ -56,6 +56,10 @@
   transition: transform 0.3s ease;
 }
 
+body[data-theme="dark"] .productMainImage {
+  background: #1e293b;
+}
+
 .productMainImage:hover {
   transform: scale(1.02);
 }
@@ -446,6 +450,121 @@
   to {
     opacity: 1;
   }
+}
+
+/* 🔴 ТЁМНАЯ ТЕМА */
+body[data-theme="dark"] .productTitle {
+  color: #f1f5f9;
+}
+
+body[data-theme="dark"] .categoryTag {
+  background: #334155;
+  color: #cbd5e1;
+}
+
+body[data-theme="dark"] .productDescription {
+  color: #94a3b8;
+}
+
+body[data-theme="dark"] .productPriceBlock {
+  border-top-color: #334155;
+  border-bottom-color: #334155;
+}
+
+body[data-theme="dark"] .productPrice {
+  color: #f1f5f9;
+}
+
+body[data-theme="dark"] .requestBtn {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #f1f5f9;
+}
+
+body[data-theme="dark"] .requestBtn:hover:not(:disabled) {
+  background: #e2e8f0;
+  border-color: #e2e8f0;
+  box-shadow: 0 10px 25px rgba(241, 245, 249, 0.15);
+}
+
+body[data-theme="dark"] .infoLabel {
+  color: #64748b;
+}
+
+body[data-theme="dark"] .infoValue {
+  color: #f1f5f9;
+}
+
+body[data-theme="dark"] .ratingBlock {
+  background: #1e293b;
+}
+
+body[data-theme="dark"] .ratingLabel {
+  color: #f1f5f9;
+}
+
+body[data-theme="dark"] .userStar {
+  color: #475569;
+}
+
+body[data-theme="dark"] .submitRatingBtn {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+body[data-theme="dark"] .productMetaInfo {
+  border-top-color: #334155;
+}
+
+body[data-theme="dark"] .relatedSection {
+  border-top-color: #334155;
+}
+
+body[data-theme="dark"] .sectionTitle {
+  color: #f1f5f9;
+}
+
+body[data-theme="dark"] .productCard {
+  background: #1e293b;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+body[data-theme="dark"] .productCard:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+body[data-theme="dark"] .imageContainer {
+  background: #334155;
+}
+
+body[data-theme="dark"] .cardName {
+  color: #f1f5f9;
+}
+
+body[data-theme="dark"] .successModalContent {
+  background: #1e293b;
+  border-color: #f1f5f9;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+body[data-theme="dark"] .successText {
+  color: #f1f5f9;
+}
+
+body[data-theme="dark"] .productContainer {
+  background: #0f172a;
+}
+
+body[data-theme="dark"] .ratingBlock {
+  background: #1e293b;
+}
+
+body[data-theme="dark"] .relatedSection {
+  border-top-color: #334155;
+}
+
+body[data-theme="dark"] .sectionTitle {
+  color: #f1f5f9;
 }
 
 @keyframes scaleIn {

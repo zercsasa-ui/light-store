@@ -14,6 +14,7 @@ import Auth from './pages/Auth';
 import Requests from './pages/Requests';
 import Admin from './pages/Admin';
 import Product from './pages/Product';
+import Profile from './pages/Profile';
 
 
 function App() {
@@ -67,14 +68,23 @@ function App() {
              </div>
            </>
          } />
-          <Route path="/product/:id" element={
-            <>
-              <MainSidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-              <div className={`${styles.mainContent} ${isCollapsed ? styles.mainContentCollapsed : ''}`}>
-                <Product isSidebarCollapsed={isCollapsed} />
-              </div>
-            </>
-          } />
+           <Route path="/product/:id" element={
+             <>
+               <MainSidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+               <div className={`${styles.mainContent} ${isCollapsed ? styles.mainContentCollapsed : ''}`}>
+                 <Product isSidebarCollapsed={isCollapsed} />
+               </div>
+             </>
+           } />
+
+           <Route path="/profile" element={
+             <>
+               <MainSidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+               <div className={`${styles.mainContent} ${isCollapsed ? styles.mainContentCollapsed : ''}`}>
+                 <Profile />
+               </div>
+             </>
+           } />
 
          {/* Защищённые страницы - только для авторизованных */}
          <Route path="/requests" element={

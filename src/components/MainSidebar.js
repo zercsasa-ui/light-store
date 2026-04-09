@@ -99,15 +99,24 @@ const MainSidebar = ({ isCollapsed, setIsCollapsed }) => {
               {!isCollapsed && <span>Каталог</span>}
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/contacts"
-              className={({ isActive }) => isActive ? `${styles.sidebarLink} ${styles.sidebarLinkActive}` : styles.sidebarLink}
-            >
-              <img src="/images/ico/icoKontakt.png" alt="" className={styles.linkIcon} />
-              {!isCollapsed && <span>Контакты</span>}
-            </NavLink>
-          </li>
+           <li>
+             <NavLink
+               to="/contacts"
+               className={({ isActive }) => isActive ? `${styles.sidebarLink} ${styles.sidebarLinkActive}` : styles.sidebarLink}
+             >
+               <img src="/images/ico/icoKontakt.png" alt="" className={styles.linkIcon} />
+               {!isCollapsed && <span>Контакты</span>}
+             </NavLink>
+           </li>
+           <li>
+             <NavLink
+               to="/profile"
+               className={({ isActive }) => isActive ? `${styles.sidebarLink} ${styles.sidebarLinkActive}` : styles.sidebarLink}
+             >
+                <img src="/images/ico/icoProfile.png" alt="" className={styles.linkIcon} />
+                {!isCollapsed && <span>Профиль</span>}
+             </NavLink>
+           </li>
           {isLoggedIn && (
             <>
               <li>

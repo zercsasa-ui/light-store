@@ -20,6 +20,29 @@ const Admin = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [editingUser, setEditingUser] = useState(null);
   const [userForm, setUserForm] = useState({ name: '', email: '', role: '' });
+  
+  // Состояния для вопросов о товарах
+  const [questions, setQuestions] = useState([]);
+  const [questionSearch, setQuestionSearch] = useState('');
+  const [questionStatusFilter, setQuestionStatusFilter] = useState('');
+  const [editingQuestion, setEditingQuestion] = useState(null);
+  const [answerText, setAnswerText] = useState('');
+  const [hoveredProduct, setHoveredProduct] = useState(null);
+
+  // Состояния для обрезки изображений
+  const [showCropper, setShowCropper] = useState(false);
+  const [originalImage, setOriginalImage] = useState(null);
+  const [cropSelection, setCropSelection] = useState({ x: 0, y: 0, width: 0, height: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
+  const [resizeHandle, setResizeHandle] = useState(null);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+
+  // Фиксированные размеры для всех фотографий товаров
+  const TARGET_ASPECT_RATIO = 3 / 4; // 3:4 соотношение (стандарт для карточек товаров)
+  const FINAL_IMAGE_WIDTH = 600;
+  const FINAL_IMAGE_HEIGHT = 800;
   const [globalViewMode, setGlobalViewMode] = useState('list'); // list / grid
   const [productForm, setProductForm] = useState({
     name: '',
@@ -30,15 +53,19 @@ const Admin = () => {
     stock: '',
     is_active: true
   });
-  const { userProfile } = useAuth();
+  const { user, userProfile } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [sortStatus, setSortStatus] = useState('');
   const [sortDate, setSortDate] = useState('desc');
+  const [requestDateFrom, setRequestDateFrom] = useState('');
+  const [requestDateTo, setRequestDateTo] = useState('');
 
   // Фильтры для товаров
   const [productSearch, setProductSearch] = useState('');
   const [productCategory, setProductCategory] = useState('');
   const [productActive, setProductActive] = useState('');
+  const [productDateFrom, setProductDateFrom] = useState('');
+  const [productDateTo, setProductDateTo] = useState('');
 
   // Состояния для категорий
   const [showCategoryForm, setShowCategoryForm] = useState(false);
@@ -75,6 +102,9 @@ const Admin = () => {
     processedUsers = processedUsers.filter(user => user.role === userRoleFilter);
   }
 
+  // Сортировка товаров
+  const [productSortDate, setProductSortDate] = useState('desc');
+
   // Обработка товаров
   let processedProducts = products.filter(prod => {
     if (productSearch.trim()) {
@@ -92,7 +122,26 @@ const Admin = () => {
     if (productActive === 'active' && !prod.is_active) return false;
     if (productActive === 'inactive' && prod.is_active) return false;
 
+    // Фильтр по дате создания товаров
+    if (productDateFrom) {
+      const fromDate = new Date(productDateFrom);
+      fromDate.setHours(0, 0, 0, 0);
+      if (new Date(prod.created_at) < fromDate) return false;
+    }
+    if (productDateTo) {
+      const toDate = new Date(productDateTo);
+      toDate.setHours(23, 59, 59, 999);
+      if (new Date(prod.created_at) > toDate) return false;
+    }
+
     return true;
+  });
+
+  // Сортировка товаров по дате
+  processedProducts = [...processedProducts].sort((a, b) => {
+    const dateA = new Date(a.created_at);
+    const dateB = new Date(b.created_at);
+    return productSortDate === 'desc' ? dateB - dateA : dateA - dateB;
   });
 
   // Восстановление состояния из localStorage при загрузке
@@ -125,18 +174,32 @@ const Admin = () => {
   let processedRequests = requests.filter(req => {
     if (!searchQuery.trim()) return true;
     const query = searchQuery.toLowerCase();
-    return (
-      req.profiles?.name?.toLowerCase().includes(query) ||
-      req.profiles?.email?.toLowerCase().includes(query) ||
-      req.phone?.toLowerCase().includes(query) ||
-      req.message?.toLowerCase().includes(query)
-    );
-  });
+    if (
+      !req.profiles?.name?.toLowerCase().includes(query) &&
+      !req.profiles?.email?.toLowerCase().includes(query) &&
+      !req.phone?.toLowerCase().includes(query) &&
+      !req.message?.toLowerCase().includes(query)
+    ) return false;
 
-  // Сортировка по статусу
-  if (sortStatus) {
-    processedRequests = processedRequests.filter(req => req.status === sortStatus);
-  }
+    // Сортировка по статусу
+    if (sortStatus && req.status !== sortStatus) {
+      return false;
+    }
+
+    // Фильтр по дате создания заявок
+    if (requestDateFrom) {
+      const fromDate = new Date(requestDateFrom);
+      fromDate.setHours(0, 0, 0, 0);
+      if (new Date(req.created_at) < fromDate) return false;
+    }
+    if (requestDateTo) {
+      const toDate = new Date(requestDateTo);
+      toDate.setHours(23, 59, 59, 999);
+      if (new Date(req.created_at) > toDate) return false;
+    }
+
+    return true;
+  });
 
   // Сортировка по дате
   processedRequests = [...processedRequests].sort((a, b) => {
@@ -166,10 +229,20 @@ const Admin = () => {
         .select('*')
         .order('created_at', { ascending: false });
 
+      const { data: questionsData } = await supabase
+        .from('product_questions')
+        .select(`
+          *,
+          products(name, id),
+          product_answers(*)
+        `)
+        .order('created_at', { ascending: false });
+
       setRequests(reqData || []);
       setProducts(prodData || []);
       setCategories(catData || []);
       setUsers(usersData || []);
+      setQuestions(questionsData || []);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -286,6 +359,25 @@ const Admin = () => {
             body: JSON.stringify({ userId: item.id })
           });
           break;
+
+        case 'delete_question':
+          // ✅ Удаление вопроса через Edge Function обходит RLS
+          const sessionQuestion = await supabase.auth.getSession();
+
+          const questionResp = await fetch('https://mutebkvjowivxupnexzp.supabase.co/functions/v1/delete-question', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${sessionQuestion.data.session.access_token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ questionId: item.id })
+          });
+
+          if (!questionResp.ok) {
+            const err = await questionResp.json();
+            throw new Error(err.error || 'Ошибка удаления вопроса');
+          }
+          break;
         case 'delete_category':
           await supabase.from('categories').delete().eq('id', item.id);
           break;
@@ -372,14 +464,223 @@ const Admin = () => {
       return;
     }
 
-    setUploading(true);
-    try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}.${fileExt}`;
+    // Создаем URL для превью и открываем кроппер
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setOriginalImage(event.target.result);
+      setShowCropper(true);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
 
+  // Обработчик загрузки изображения в кроппере
+  const handleCropperImageLoad = (e) => {
+    const img = e.target;
+    const width = img.offsetWidth;
+    const height = img.offsetHeight;
+    
+    setImageDimensions({ width, height });
+
+    // Рассчитываем размер рамки выбора по центру с правильным соотношением
+    let selectionWidth, selectionHeight;
+    
+    if (width / height > TARGET_ASPECT_RATIO) {
+      // Изображение шире нужного соотношения - ограничиваем по высоте
+      selectionHeight = height * 0.8;
+      selectionWidth = selectionHeight * TARGET_ASPECT_RATIO;
+    } else {
+      // Изображение выше нужного соотношения - ограничиваем по ширине
+      selectionWidth = width * 0.8;
+      selectionHeight = selectionWidth / TARGET_ASPECT_RATIO;
+    }
+
+    setCropSelection({
+      x: (width - selectionWidth) / 2,
+      y: (height - selectionHeight) / 2,
+      width: selectionWidth,
+      height: selectionHeight
+    });
+  };
+
+  // Обработчики для перетаскивания рамки выбора
+  const handleCropMouseDown = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const target = e.target;
+    
+    if (target.classList.contains(styles.cropResizeHandle)) {
+      setIsResizing(true);
+      setResizeHandle(target.dataset.corner);
+      setDragStart({
+        x: e.clientX,
+        y: e.clientY,
+        selectionX: cropSelection.x,
+        selectionY: cropSelection.y,
+        selectionWidth: cropSelection.width,
+        selectionHeight: cropSelection.height
+      });
+    } else {
+      setIsDragging(true);
+      setDragStart({
+        x: e.clientX - cropSelection.x,
+        y: e.clientY - cropSelection.y
+      });
+    }
+  };
+
+  const handleCropMouseMove = (e) => {
+    if (isDragging) {
+      let newX = e.clientX - dragStart.x;
+      let newY = e.clientY - dragStart.y;
+
+      // Ограничиваем передвижение в пределах изображения
+      newX = Math.max(0, Math.min(newX, imageDimensions.width - cropSelection.width));
+      newY = Math.max(0, Math.min(newY, imageDimensions.height - cropSelection.height));
+
+      setCropSelection(prev => ({
+        ...prev,
+        x: newX,
+        y: newY
+      }));
+    }
+    
+    if (isResizing) {
+      const deltaX = e.clientX - dragStart.x;
+      const deltaY = e.clientY - dragStart.y;
+      
+      // Рассчитываем новую ширину и высоту с сохранением соотношения
+      let newWidth = dragStart.selectionWidth;
+      let newHeight = dragStart.selectionHeight;
+      let newX = dragStart.selectionX;
+      let newY = dragStart.selectionY;
+
+      if (resizeHandle === 'br') {
+        // Правая нижняя точка
+        const scale = Math.min(deltaX / dragStart.selectionWidth, deltaY / dragStart.selectionHeight);
+        newWidth = Math.max(100, dragStart.selectionWidth * (1 + scale));
+        newHeight = newWidth / TARGET_ASPECT_RATIO;
+      } else if (resizeHandle === 'tl') {
+        // Левая верхняя точка
+        const scale = Math.min(-deltaX / dragStart.selectionWidth, -deltaY / dragStart.selectionHeight);
+        newWidth = Math.max(100, dragStart.selectionWidth * (1 + scale));
+        newHeight = newWidth / TARGET_ASPECT_RATIO;
+        newX = dragStart.selectionX + (dragStart.selectionWidth - newWidth);
+        newY = dragStart.selectionY + (dragStart.selectionHeight - newHeight);
+      } else if (resizeHandle === 'tr') {
+        // Правая верхняя точка
+        const scale = Math.min(deltaX / dragStart.selectionWidth, -deltaY / dragStart.selectionHeight);
+        newWidth = Math.max(100, dragStart.selectionWidth * (1 + scale));
+        newHeight = newWidth / TARGET_ASPECT_RATIO;
+        newY = dragStart.selectionY + (dragStart.selectionHeight - newHeight);
+      } else if (resizeHandle === 'bl') {
+        // Левая нижняя точка
+        const scale = Math.min(-deltaX / dragStart.selectionWidth, deltaY / dragStart.selectionHeight);
+        newWidth = Math.max(100, dragStart.selectionWidth * (1 + scale));
+        newHeight = newWidth / TARGET_ASPECT_RATIO;
+        newX = dragStart.selectionX + (dragStart.selectionWidth - newWidth);
+      }
+
+      // Ограничиваем размеры в пределах изображения
+      // ✅ Абсолютные ограничения рамки в пределах изображения
+      if (newX < 0) {
+        newWidth += newX;
+        newX = 0;
+      }
+      if (newY < 0) {
+        newHeight += newY;
+        newY = 0;
+      }
+      if (newX + newWidth > imageDimensions.width) {
+        newWidth = imageDimensions.width - newX;
+      }
+      if (newY + newHeight > imageDimensions.height) {
+        newHeight = imageDimensions.height - newY;
+      }
+      
+      // Корректировка пропорций после ограничений
+      const finalRatio = newWidth / newHeight;
+      if (finalRatio > TARGET_ASPECT_RATIO) {
+        newWidth = newHeight * TARGET_ASPECT_RATIO;
+      } else {
+        newHeight = newWidth / TARGET_ASPECT_RATIO;
+      }
+      
+      // Финальная проверка чтобы точно не вышло за границы
+      if (newX + newWidth > imageDimensions.width) {
+        newX = imageDimensions.width - newWidth;
+      }
+      if (newY + newHeight > imageDimensions.height) {
+        newY = imageDimensions.height - newHeight;
+      }
+      
+      // Минимальный размер
+      newWidth = Math.max(100, newWidth);
+      newHeight = Math.max(133, newHeight);
+
+      setCropSelection({
+        x: newX,
+        y: newY,
+        width: newWidth,
+        height: newHeight
+      });
+    }
+  };
+
+  const handleCropMouseUp = () => {
+    setIsDragging(false);
+    setIsResizing(false);
+    setResizeHandle(null);
+  };
+
+  // Функция обрезки изображения
+  const handleCropConfirm = async () => {
+    setUploading(true);
+    
+    try {
+      // Создаем canvas для обрезки
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      
+      img.src = originalImage;
+      
+      await new Promise((resolve) => {
+        img.onload = resolve;
+      });
+
+      // Рассчитываем коэффициент масштабирования
+      const scaleX = img.naturalWidth / imageDimensions.width;
+      const scaleY = img.naturalHeight / imageDimensions.height;
+
+      // Устанавливаем финальные размеры
+      canvas.width = FINAL_IMAGE_WIDTH;
+      canvas.height = FINAL_IMAGE_HEIGHT;
+
+      // Обрезаем и изменяем размер
+      ctx.drawImage(
+        img,
+        cropSelection.x * scaleX,
+        cropSelection.y * scaleY,
+        cropSelection.width * scaleX,
+        cropSelection.height * scaleY,
+        0,
+        0,
+        FINAL_IMAGE_WIDTH,
+        FINAL_IMAGE_HEIGHT
+      );
+
+      // Конвертируем в blob
+      const blob = await new Promise((resolve) => {
+        canvas.toBlob(resolve, 'image/webp', 0.9);
+      });
+
+      // Загружаем обрезанное изображение
+      const fileName = `${Date.now()}.webp`;
       const { error: uploadError } = await supabase.storage
         .from('products')
-        .upload(fileName, file);
+        .upload(fileName, blob);
 
       if (uploadError) throw uploadError;
 
@@ -388,12 +689,21 @@ const Admin = () => {
         .getPublicUrl(fileName);
 
       setProductForm({ ...productForm, image_url: publicUrl });
+      setShowCropper(false);
+      setOriginalImage(null);
+      
     } catch (error) {
-      console.error('Error uploading image:', error);
-      alert('Ошибка при загрузке изображения');
+      console.error('Error cropping image:', error);
+      alert('Ошибка при обработке изображения');
     } finally {
       setUploading(false);
     }
+  };
+
+  const handleCropCancel = () => {
+    setShowCropper(false);
+    setOriginalImage(null);
+    setIsDragging(false);
   };
 
   const handleCreateProduct = async (e) => {
@@ -555,13 +865,19 @@ const Admin = () => {
           Категории ({categories.length})
         </button>
         {userProfile?.role === 'admin' && (
-          <button
-            className={`${styles.tab} ${activeTab === 'users' ? styles.active : ''}`}
-            onClick={() => setActiveTab('users')}
-          >
-            Пользователи ({users.length})
-          </button>
-        )}
+        <button
+          className={`${styles.tab} ${activeTab === 'users' ? styles.active : ''}`}
+          onClick={() => setActiveTab('users')}
+        >
+          Пользователи ({users.length})
+        </button>
+      )}
+      <button
+        className={`${styles.tab} ${activeTab === 'questions' ? styles.active : ''}`}
+        onClick={() => setActiveTab('questions')}
+      >
+        Вопросы ({questions.length})
+      </button>
       </div>
 
       {activeTab === 'requests' && (
@@ -598,6 +914,21 @@ const Admin = () => {
               <option value="desc">Сначала новые</option>
               <option value="asc">Сначала старые</option>
             </select>
+
+            <input
+              type="date"
+              value={requestDateFrom}
+              onChange={(e) => setRequestDateFrom(e.target.value)}
+              className={styles.dateInput}
+              placeholder="От даты"
+            />
+            <input
+              type="date"
+              value={requestDateTo}
+              onChange={(e) => setRequestDateTo(e.target.value)}
+              className={styles.dateInput}
+              placeholder="До даты"
+            />
 
             <span className={styles.searchCount}>Всего: {processedRequests.length}</span>
 
@@ -739,6 +1070,30 @@ const Admin = () => {
               <option value="active">Активные</option>
               <option value="inactive">Неактивные</option>
             </select>
+
+            <select
+              value={productSortDate}
+              onChange={(e) => setProductSortDate(e.target.value)}
+              className={styles.filterSelect}
+            >
+              <option value="desc">Сначала новые</option>
+              <option value="asc">Сначала старые</option>
+            </select>
+
+            <input
+              type="date"
+              value={productDateFrom}
+              onChange={(e) => setProductDateFrom(e.target.value)}
+              className={styles.dateInput}
+              placeholder="От даты"
+            />
+            <input
+              type="date"
+              value={productDateTo}
+              onChange={(e) => setProductDateTo(e.target.value)}
+              className={styles.dateInput}
+              placeholder="До даты"
+            />
 
             <span className={styles.searchCount}>Всего: {processedProducts.length}</span>
 
@@ -1040,6 +1395,286 @@ const Admin = () => {
         </div>
       )}
 
+      {activeTab === 'questions' && (
+        <div className={styles.questionsSection}>
+          <div className={styles.filtersBar}>
+            <div className={styles.searchWrapper}>
+              <img src="/images/ico/icoLupa.png" alt="Поиск" className={styles.searchIcon} />
+              <input
+                type="text"
+                placeholder="Поиск по вопросам..."
+                value={questionSearch}
+                onChange={(e) => setQuestionSearch(e.target.value)}
+                className={styles.searchInput}
+              />
+            </div>
+
+            <select
+              value={questionStatusFilter}
+              onChange={(e) => setQuestionStatusFilter(e.target.value)}
+              className={styles.filterSelect}
+            >
+              <option value="">Все вопросы</option>
+              <option value="new">Новые / На модерации</option>
+              <option value="published">Опубликованные</option>
+              <option value="answered">С ответом</option>
+            </select>
+
+            <span className={styles.searchCount}>Всего: {
+              questions.filter(q => {
+                if (!questionSearch.trim()) return true;
+                const query = questionSearch.toLowerCase();
+                return (
+                  q.user_name?.toLowerCase().includes(query) ||
+                  q.question?.toLowerCase().includes(query) ||
+                  q.products?.name?.toLowerCase().includes(query)
+                );
+              }).filter(q => {
+                if (!questionStatusFilter) return true;
+                if (questionStatusFilter === 'new') return !q.is_published;
+                if (questionStatusFilter === 'published') return q.is_published;
+                if (questionStatusFilter === 'answered') return q.is_answered;
+                return true;
+              }).length
+            }</span>
+
+            <button
+              onClick={() => setGlobalViewMode(globalViewMode === 'list' ? 'grid' : 'list')}
+              className={styles.viewToggleBtn}
+            >
+              <img src="/images/ico/icoMain.png" alt="Вид" className={styles.viewIcon} />
+            </button>
+          </div>
+
+          {
+            questions.filter(q => {
+              if (!questionSearch.trim()) return true;
+              const query = questionSearch.toLowerCase();
+              return (
+                q.user_name?.toLowerCase().includes(query) ||
+                q.question?.toLowerCase().includes(query) ||
+                q.products?.name?.toLowerCase().includes(query)
+              );
+            }).filter(q => {
+              if (!questionStatusFilter) return true;
+              if (questionStatusFilter === 'new') return !q.is_published;
+              if (questionStatusFilter === 'published') return q.is_published;
+              if (questionStatusFilter === 'answered') return q.is_answered;
+              return true;
+            }).length === 0 ? (
+              <p className={styles.empty}>Вопросов пока нет</p>
+            ) : (
+              <div className={`${styles.requestsList} ${globalViewMode === 'grid' ? styles.requestsGrid : ''}`}>
+                {questions.filter(q => {
+                  if (!questionSearch.trim()) return true;
+                  const query = questionSearch.toLowerCase();
+                  return (
+                    q.user_name?.toLowerCase().includes(query) ||
+                    q.question?.toLowerCase().includes(query) ||
+                    q.products?.name?.toLowerCase().includes(query)
+                  );
+                }).filter(q => {
+                  if (!questionStatusFilter) return true;
+                  if (questionStatusFilter === 'new') return !q.is_published;
+                  if (questionStatusFilter === 'published') return q.is_published;
+                  if (questionStatusFilter === 'answered') return q.is_answered;
+                  return true;
+                }).map(q => (
+                  <div key={q.id} className={styles.requestCard}>
+                    <div className={styles.requestLeft}>
+                    <div className={styles.requestHeader}>
+                        <div>
+                          Пользователь: <strong> {q.user_name}</strong>
+                      <div 
+                        style={{
+                          fontSize: '13px', 
+                          color: '#0d9488', 
+                          marginTop: '4px',
+                          cursor: 'pointer',
+                          position: 'relative'
+                        }}
+                        onClick={() => window.open(`/product/${q.products.id}`, '_blank')}
+                        onMouseEnter={(e) => {
+                          setHoveredProduct(q.products.id);
+                          window.lastMouseX = e.clientX;
+                          window.lastMouseY = e.clientY;
+                        }}
+                        onMouseLeave={() => setHoveredProduct(null)}
+                      >
+                        📦 О товаре: <strong>{q.products?.name}</strong>
+
+                        {/* Всплывающая карточка товара при наведении */}
+                        {hoveredProduct === q.products.id && (
+                          <div style={{
+                            position: 'fixed',
+                            background: 'var(--bg-secondary)',
+                            border: '1px solid var(--border-color)',
+                            borderRadius: '8px',
+                            padding: '12px',
+                            width: '220px',
+                            zIndex: 999,
+                            boxShadow: '0 8px 24px var(--shadow-color)',
+                            left: `${document.body.scrollLeft + window.lastMouseX - 110}px`,
+                            top: `${document.body.scrollTop + window.lastMouseY + 10}px`,
+                            animation: 'fadeIn 0.15s ease'
+                          }}>
+                            <img 
+                              src={products.find(p => p.id === q.products.id)?.image_url || 'https://via.placeholder.com/200'} 
+                              alt={q.products.name}
+                              style={{
+                                width: '100%',
+                                height: '100px',
+                                objectFit: 'contain',
+                                borderRadius: '4px',
+                                marginBottom: '8px',
+                                background: 'var(--bg-tertiary)'
+                              }}
+                            />
+                            <p style={{margin: '0 0 4px 0', fontWeight: 600, fontSize: '13px'}}>{q.products.name}</p>
+                            <p style={{margin: '0', fontSize: '12px', color: '#0d9488'}}>
+                              💰 {products.find(p => p.id === q.products.id)?.price || 0} ₽
+                            </p>
+                            <p style={{margin: '4px 0 0 0', fontSize: '11px', color: 'var(--text-secondary)'}}>
+                              На складе: {products.find(p => p.id === q.products.id)?.stock || 0} шт.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                        </div>
+                       <span className={styles.requestDate}>
+                          {new Date(q.created_at).toLocaleDateString('ru-RU')}
+                        </span>
+                      </div>
+                      <p className={styles.requestMessage}>Спрашивает: {q.question}</p>
+                    </div>
+
+                    <div className={styles.requestRight}>
+                       <div className={styles.requestStatus}>
+                         {!q.is_published && <span className={`${styles.status} ${styles.statusPending}`}>На модерации</span>}
+                         {q.is_published && !q.is_answered && <span className={`${styles.status} ${styles.statusInProgress}`}>Опубликован</span>}
+                         {q.is_answered && <span className={`${styles.status} ${styles.statusCompleted}`}>Отвечен</span>}
+                       </div>
+                      <div className={styles.requestActions}>
+                        {editingQuestion !== q.id ? (
+                          <>
+                             {/* Отображаем ответ если он существует */}
+                             {q.product_answers && q.product_answers.length > 0 && (
+                               <div style={{
+                                 width: '100%',
+                                 marginTop: '12px',
+                                 padding: '12px',
+                                 background: 'rgba(13, 148, 136, 0.08)',
+                                 borderLeft: '3px solid #0d9488',
+                                 borderRadius: '0 8px 8px 0'
+                               }}>
+                                 <div style={{
+                                   fontWeight: 600,
+                                   color: '#0d9488',
+                                   fontSize: '13px',
+                                   marginBottom: '6px'
+                                 }}>
+                                    Ответ от {q.product_answers[0].responder_name}:
+                                 </div>
+                                 <p style={{margin: 0, fontSize: '14px', color: 'var(--text-primary)'}}>
+                                   {q.product_answers[0].answer_text}
+                                 </p>
+                               </div>
+                             )}
+
+                             <button
+                               className={styles.editBtn}
+                               onClick={() => {
+                                 setEditingQuestion(q.id);
+                                 // Если есть уже ответ - подставляем его в поле ввода
+                                 if (q.product_answers && q.product_answers.length > 0) {
+                                   setAnswerText(q.product_answers[0].answer_text);
+                                 } else {
+                                   setAnswerText('');
+                                 }
+                               }}
+                             >
+                              {q.product_answers && q.product_answers.length > 0 ? 'Изменить ответ' : 'Ответить'}
+                            </button>
+                            {!q.is_published && (
+                              <button
+                                className={styles.editBtn}
+                                onClick={async () => {
+                                  await supabase
+                                    .from('product_questions')
+                                    .update({ is_published: true })
+                                    .eq('id', q.id);
+                                  fetchData();
+                                  showSuccess('Вопрос опубликован!');
+                                }}
+                              >
+                                Опубликовать
+                              </button>
+                            )}
+                            <button
+                              className={styles.deleteBtn}
+                              onClick={() => openConfirmModal('delete_question', q)}
+                            >
+                              Удалить
+                            </button>
+                          </>
+                        ) : null}
+                      </div>
+                    </div>
+
+                    {editingQuestion === q.id && (
+                      <div className={styles.editForm}>
+                        <textarea
+                          value={answerText}
+                          onChange={(e) => setAnswerText(e.target.value.slice(0, 500))}
+                          placeholder="Ответ на вопрос..."
+                          rows={3}
+                          maxLength={500}
+                        />
+                        <div className={styles.editActions}>
+                           <button onClick={async () => {
+                             try {
+                               const { data: { session } } = await supabase.auth.getSession();
+                               
+                               const response = await fetch('https://mutebkvjowivxupnexzp.supabase.co/functions/v1/submit-answer', {
+                                 method: 'POST',
+                                 headers: {
+                                   'Authorization': `Bearer ${session.access_token}`,
+                                   'Content-Type': 'application/json'
+                                 },
+                                 body: JSON.stringify({
+                                   questionId: q.id,
+                                   answerText: answerText,
+                                   responderId: user.id,
+                                   responderName: userProfile.name
+                                 })
+                               });
+
+                               if (!response.ok) {
+                                 const error = await response.json();
+                                 throw new Error(error.error || 'Ошибка сервера');
+                               }
+
+                               setEditingQuestion(null);
+                               setAnswerText('');
+                               fetchData();
+                               showSuccess('✅ Ответ сохранен и опубликован!');
+                             } catch (error) {
+                               console.error('Ошибка отправки ответа:', error);
+                               alert(`Ошибка: ${error.message}`);
+                             }
+                           }}>Отправить ответ</button>
+                          <button onClick={() => setEditingQuestion(null)}>Отмена</button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        
+      )}
+
       {activeTab === 'categories' && (
         <div className={styles.categoriesSection}>
           <div className={styles.filtersBar}>
@@ -1181,6 +1816,61 @@ const Admin = () => {
                 onClick={() => setConfirmModal(null)}
               >
                 Отмена
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Модальное окно для обрезки изображения */}
+      {showCropper && (
+        <div className={styles.cropperOverlay} onMouseMove={handleCropMouseMove} onMouseUp={handleCropMouseUp} onMouseLeave={handleCropMouseUp}>
+          <div className={styles.cropperContainer}>
+            <h3 className={styles.cropperTitle}>Выберите область для фотографии</h3>
+            <p className={styles.cropperHint}>Фотографии всех товаров будут одинакового размера 600×800 px</p>
+            
+            <div className={styles.cropperImageWrapper}>
+              <img 
+                src={originalImage} 
+                alt="Original" 
+                className={styles.cropperImage}
+                onLoad={handleCropperImageLoad}
+                draggable={false}
+              />
+              
+              {/* Рамка выбора области */}
+              <div 
+                className={styles.cropSelection}
+                style={{
+                  left: cropSelection.x,
+                  top: cropSelection.y,
+                  width: cropSelection.width,
+                  height: cropSelection.height
+                }}
+                onMouseDown={handleCropMouseDown}
+              >
+                <div className={`${styles.cropResizeHandle} ${styles.cropHandleTL}`} data-corner="tl" onMouseDown={handleCropMouseDown}></div>
+                <div className={`${styles.cropResizeHandle} ${styles.cropHandleTR}`} data-corner="tr" onMouseDown={handleCropMouseDown}></div>
+                <div className={`${styles.cropResizeHandle} ${styles.cropHandleBL}`} data-corner="bl" onMouseDown={handleCropMouseDown}></div>
+                <div className={`${styles.cropResizeHandle} ${styles.cropHandleBR}`} data-corner="br" onMouseDown={handleCropMouseDown}></div>
+              </div>
+              
+              {/* Затемнение вокруг выбранной области */}
+              <div className={styles.cropOverlay} style={{
+                clipPath: `polygon(
+                  0% 0%, 0% 100%, 
+                  ${cropSelection.x}px 100%, ${cropSelection.x}px ${cropSelection.y}px, 
+                  ${cropSelection.x + cropSelection.width}px ${cropSelection.y}px, ${cropSelection.x + cropSelection.width}px ${cropSelection.y + cropSelection.height}px, 
+                  ${cropSelection.x}px ${cropSelection.y + cropSelection.height}px, ${cropSelection.x}px 100%, 
+                  100% 100%, 100% 0%
+                )`
+              }}></div>
+            </div>
+
+            <div className={styles.cropperActions}>
+              <button className={styles.cropperCancelBtn} onClick={handleCropCancel}>Отмена</button>
+              <button className={styles.cropperConfirmBtn} onClick={handleCropConfirm} disabled={uploading}>
+                {uploading ? 'Обработка...' : 'Использовать эту область'}
               </button>
             </div>
           </div>

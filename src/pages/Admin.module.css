@@ -166,6 +166,17 @@
   color: var(--text-primary);
 }
 
+.dateInput {
+  padding: 10px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  background: var(--bg-secondary);
+  min-width: 140px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
 .searchCount {
   color: var(--text-secondary);
   font-size: 0.9rem;
@@ -335,6 +346,30 @@
   word-break: break-word;
 }
 
+.answerBlock {
+  background: var(--bg-tertiary);
+  border-left: 3px solid #0d9488;
+  padding: 12px 16px;
+  border-radius: 0 6px 6px 0;
+  margin-top: 8px;
+}
+
+.answerAuthor {
+  font-weight: 600;
+  color: #0d9488;
+  font-size: 13px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.answerText {
+  margin: 0;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 14px;
+}
+
 .truncatedText {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -380,25 +415,28 @@
   background: #fef3c7;
   color: #92400e;
   border-color: #f59e0b;
-  border-radius: 4px;
+  border-radius: 12px;
 }
 
 .statusInProgress {
   background: #cffafe;
   color: #0e7490;
   border-color: #06b6d4;
+  border-radius: 12px;
 }
 
 .statusCompleted {
   background: #dcfce7;
   color: #166534;
   border-color: #22c55e;
+  border-radius: 12px;
 }
 
 .statusRejected {
   background: #fee2e2;
   color: #991b1b;
   border-color: #ef4444;
+  border-radius: 12px;
 }
 
 .requestStatus {
@@ -458,26 +496,25 @@
 
 /* ✅ Строгий стиль кнопок для запросов */
 .editBtn {
-  padding: 6px 14px;
-  background: transparent;
-color: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  background-color:var(--accent-hover);
+  padding: 8px 16px;
+  background: var(--accent-color);
+  color: var(--bg-primary);
+  border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   transition: all 0.15s ease;
 }
 
 .deleteBtn {
-  padding: 5px 10px;
-  background: transparent;
-  color: #dc3545;
-  border: 1px solid #dc3545;
+  padding: 8px 16px;
+  background: #dc3545;
+  color: white;
+  border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   transition: all 0.15s ease;
 }
@@ -489,14 +526,170 @@ color: var(--bg-primary);
 }
 
 .editBtn:hover {
-  background: var(--accent-color);
-  border-color: var(--accent-color);
-  color: var(--bg-primary);
+  background: var(--accent-hover);
 }
 
 .deleteBtn:hover {
-  background: #dc3545;
+  background: #bb2d3b;
+}
+
+/* Кроппер изображений */
+.cropperOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  backdrop-filter: blur(8px);
+  padding: 20px;
+}
+
+.cropperContainer {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cropperTitle {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.cropperHint {
+  margin: 0 0 8px;
+  color: var(--text-secondary);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.cropperImageWrapper {
+  position: relative;
+  max-width: 100%;
+  max-height: 60vh;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #000;
+  user-select: none;
+}
+
+.cropperImage {
+  max-width: 100%;
+  max-height: 60vh;
+  display: block;
+  pointer-events: none;
+}
+
+.cropSelection {
+  position: absolute;
+  border: 2px solid #ffffff;
+  cursor: move;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+.cropResizeHandle {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 3px;
+  z-index: 10;
+}
+
+.cropHandleTL {
+  top: -8px;
+  left: -8px;
+  cursor: nwse-resize;
+}
+
+.cropHandleTR {
+  top: -8px;
+  right: -8px;
+  cursor: nesw-resize;
+}
+
+.cropHandleBL {
+  bottom: -8px;
+  left: -8px;
+  cursor: nesw-resize;
+}
+
+.cropHandleBR {
+  bottom: -8px;
+  right: -8px;
+  cursor: nwse-resize;
+}
+
+.cropOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.cropperActions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.cropperCancelBtn {
+  padding: 12px 24px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.cropperCancelBtn:hover {
+  background: var(--bg-secondary);
+}
+
+.cropperConfirmBtn {
+  padding: 12px 32px;
+  background: #0d9488;
   color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.cropperConfirmBtn:hover:not(:disabled) {
+  background: #0f766e;
+  transform: translateY(-1px);
+}
+
+.cropperConfirmBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* Товары */
@@ -751,19 +944,7 @@ color: var(--bg-primary);
   white-space: nowrap;
 }
 
-.deleteBtn {
-  padding: 8px 16px;
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
 
-.deleteBtn:hover {
-  background: #bb2d3b;
-}
 
 /* Загрузка изображений */
 .imageUpload {
@@ -985,24 +1166,7 @@ color: var(--bg-primary);
   box-shadow: 0 4px 12px var(--shadow-color);
 }
 
-.deleteBtn {
-  padding: 10px 16px;
-  background: transparent;
-  color: #dc3545;
-  border: 1px solid #dc3545;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
 
-.deleteBtn:hover {
-  background: #dc3545;
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
-}
 
 .productForm h3 {
   margin: 0 0 12px;

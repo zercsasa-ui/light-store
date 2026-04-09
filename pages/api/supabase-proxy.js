@@ -1,62 +1,57 @@
 export default async function handler(req, res) {
-  // Получаем оригинальный путь запроса
-  const path = req.url.replace('/api/supabase-proxy', '')
+  const SUPABASE_URL = 'https://mutebkvjowivxupnexzp.supabase.co'
   
-  // Актуальные рабочие зеркала Supabase на апрель 2026
-  const mirrors = [
-    'https://mutebkvjowivxupnexzp.supabase.co',
-    'https://sg.supabase.co',
-    'https://in.supabase.co', 
-    'https://us-west-2.aws.supabase.co',
-    'https://ap-southeast-1.aws.supabase.co'
-  ]
-
-  // Отправляем запрос параллельно на все зеркала сразу
-  const promises = mirrors.map(mirror => 
-    fetch(`${mirror}${path}`, {
-      method: req.method,
-      headers: {
-        ...req.headers,
-        host: new URL(mirror).host
-      },
-      body: req.method !== 'GET' ? req.body : undefined,
-      redirect: 'follow'
-    }).catch(() => null)
-  )
-
   try {
-    // Ждём первый успешный ответ
-    const responses = await Promise.allSettled(promises)
-    const successResponse = responses.find(r => r.status === 'fulfilled' && r.value.ok)
-
-    if (successResponse) {
-      const response = successResponse.value
-      
-      // Пересылаем все заголовки обратно
-      response.headers.forEach((value, key) => {
-        res.setHeader(key, value)
-      })
-      
-      // Отправляем тело ответа
-      res.status(response.status)
-      response.body.pipe(res)
-      return
-    }
+    // Получаем путь после /api/supabase-proxy/
+    const path = req.url.replace(/^\/api\/supabase-proxy/, '')
     
-    throw new Error('Все зеркала не ответили')
-
-  } catch (e) {
-    res.status(503).json({ 
-      error: 'Сервис временно недоступен',
-      code: 'all_mirrors_failed'
+    // Формируем целевой URL на Supabase
+    const targetUrl = `${SUPABASE_URL}${path}`
+    
+    // Копируем все заголовки кроме хоста
+    const headers = { ...req.headers }
+    delete headers.host
+    delete headers['content-length']
+    
+    // Делаем запрос к Supabase
+    const response = await fetch(targetUrl, {
+      method: req.method,
+      headers: headers,
+      body: req.method !== 'GET' && req.method !== 'HEAD' ? JSON.stringify(req.body) : undefined,
+      redirect: 'follow'
+    })
+    
+    // Копируем заголовки ответа
+    const responseHeaders = {}
+    response.headers.forEach((value, key) => {
+      responseHeaders[key] = value
+    })
+    
+    // Разрешаем CORS для фронтенда
+    responseHeaders['Access-Control-Allow-Origin'] = '*'
+    responseHeaders['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, PATCH, OPTIONS'
+    responseHeaders['Access-Control-Allow-Headers'] = '*'
+    
+    // Отправляем ответ клиенту
+    res.status(response.status)
+    res.set(responseHeaders)
+    
+    const data = await response.arrayBuffer()
+    res.send(Buffer.from(data))
+    
+  } catch (error) {
+    console.error('Proxy error:', error)
+    res.status(503).json({
+      error: 'Proxy error',
+      message: error.message
     })
   }
 }
 
+// Отключаем парсинг тела запроса чтобы прокси работало корректно
 export const config = {
   api: {
     bodyParser: false,
-    externalResolver: true,
-    responseLimit: false
+    externalResolver: true
   }
 }

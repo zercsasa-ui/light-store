@@ -1,12 +1,12 @@
 import { createClient } from '@supabase/supabase-js'
 
-// ❌ Новый вариант через локальный прокси Vercel (обходит любые блокировки)
-// const supabaseUrl = '/api/supabase-proxy'
-// const supabaseKey = 'sb_publishable_oyu0Kmel3M15Am53sI_tzg_dZws5Hds'
-
-//   Старый вариант прямого подключения, пока Supabase не поправят валидацию
-const supabaseUrl = 'https://mutebkvjowivxupnexzp.supabase.co'
+// ✅ Новый вариант через локальный прокси Vercel (обходит любые блокировки)
+const supabaseUrl = '/api/supabase-proxy'
 const supabaseKey = 'sb_publishable_oyu0Kmel3M15Am53sI_tzg_dZws5Hds'
+
+// ❌ Старый вариант прямого подключения
+// const supabaseUrl = 'https://mutebkvjowivxupnexzp.supabase.co'
+// const supabaseKey = 'sb_publishable_oyu0Kmel3M15Am53sI_tzg_dZws5Hds'
 
 //   Актуальные рабочие зеркала Supabase апрель 2026
 const FALLBACK_DOMAINS = [

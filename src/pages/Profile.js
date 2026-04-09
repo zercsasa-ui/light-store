@@ -16,13 +16,6 @@ const Profile = () => {
   // Доступные аватарки
   const avatars = ['😎', '👽', '🦊', '🐱'];
   
-  // Получаем выбранный аватар из localStorage
-  const getCurrentAvatar = () => {
-    if (!user) return user?.email?.charAt(0).toUpperCase() || 'U';
-    const saved = localStorage.getItem(`avatar_${user.id}`);
-    return saved || user.email?.charAt(0).toUpperCase() || 'U';
-  };
-  
   const [currentAvatar, setCurrentAvatar] = useState('U');
   const [showAvatarHint, setShowAvatarHint] = useState(() => {
     return localStorage.getItem('avatar_hidden') !== 'true';
@@ -189,7 +182,11 @@ const Profile = () => {
       <div className={styles.section}>
         <h2>Избранные товары ({favorites.length})</h2>
 
-        {favorites.length === 0 ? (
+        {loading ? (
+          <div className={styles.emptyState}>
+            <p>Загрузка избранных товаров...</p>
+          </div>
+        ) : favorites.length === 0 ? (
           <div className={styles.emptyState}>
             <p>У вас пока нет сохранённых товаров</p>
             <p className={styles.note}>Нажмите ❤️ на товаре чтобы добавить сюда</p>

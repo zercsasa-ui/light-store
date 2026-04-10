@@ -15,6 +15,7 @@ import Requests from './pages/Requests';
 import Admin from './pages/Admin';
 import Product from './pages/Product';
 import Profile from './pages/Profile';
+import LightingCalculator from './pages/LightingCalculator';
 
 
 function App() {
@@ -60,14 +61,22 @@ function App() {
              </div>
            </>
          } />
-         <Route path="/contacts" element={
-           <>
-             <MainSidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-             <div className={`${styles.mainContent} ${isCollapsed ? styles.mainContentCollapsed : ''}`}>
-               <Contacts />
-             </div>
-           </>
-         } />
+          <Route path="/contacts" element={
+            <>
+              <MainSidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+              <div className={`${styles.mainContent} ${isCollapsed ? styles.mainContentCollapsed : ''}`}>
+                <Contacts />
+              </div>
+            </>
+          } />
+          <Route path="/calculator" element={
+            <>
+              <MainSidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+              <div className={`${styles.mainContent} ${isCollapsed ? styles.mainContentCollapsed : ''}`}>
+                <LightingCalculator />
+              </div>
+            </>
+          } />
            <Route path="/product/:id" element={
              <>
                <MainSidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />

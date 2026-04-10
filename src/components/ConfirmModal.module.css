@@ -1,0 +1,140 @@
+/* Общий компонент модального окна подтверждения */
+/* Дизайн полностью повторяет модальное окно из MainSidebar */
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(20, 20, 20, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease;
+}
+
+.modalContent {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease;
+  border: 2px solid #141414;
+}
+
+.modalTitle {
+  margin: 0 0 16px;
+  font-size: 1.3rem;
+  color: #141414;
+  font-weight: 600;
+}
+
+.modalMessage {
+  margin: 0 0 28px;
+  color: #525252;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.modalConfirmBtn {
+  padding: 12px 24px;
+  background: #141414;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.modalConfirmBtn:hover {
+  background: #2d2d2d;
+  transform: translateY(-1px);
+}
+
+.modalCancelBtn {
+  padding: 12px 24px;
+  background: transparent;
+  color: #141414;
+  border: 1px solid #141414;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.modalCancelBtn:hover {
+  background: rgba(20, 20, 20, 0.05);
+  border-color: #2d2d2d;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Темная тема */
+html[data-theme="dark"] .modalContent {
+  background: var(--bg-primary) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+}
+
+html[data-theme="dark"] .modalTitle {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .modalMessage {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .modalCancelBtn {
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] .modalCancelBtn:hover {
+  background: var(--bg-secondary) !important;
+}
+
+html[data-theme="dark"] .modalConfirmBtn {
+  background: var(--accent-color) !important;
+  color: var(--bg-primary) !important;
+}
+
+html[data-theme="dark"] .modalConfirmBtn:hover {
+  background: var(--accent-hover) !important;
+}
+
+html[data-theme="dark"] .modalOverlay {
+  background: rgba(0, 0, 0, 0.85) !important;
+}

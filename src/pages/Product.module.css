@@ -213,10 +213,29 @@
   transform: translateY(-1px);
 }
 
+.actionBtn {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  border: 2px solid var(--border-color);
+  background: transparent;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .actionBtn img {
-  width: 18px;
-  height: 18px;
-  vertical-align: middle;
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  filter: var(--icon-filter, none);
+}
+
+.favoriteActive img {
+  filter: none !important;
 }
 
 .favoriteActive {
@@ -642,6 +661,15 @@ html[data-theme="dark"] .requestBtn {
 
 html[data-theme="dark"] .submitRatingBtn {
   color: #0f172a;
+}
+
+html[data-theme="dark"] .actionBtn img {
+  filter: invert(1) brightness(0.9);
+}
+
+html[data-theme="dark"] .favoriteActive img,
+html[data-theme="dark"] .copySuccess img {
+  filter: none !important;
 }
 
 /* ======================================

@@ -398,7 +398,7 @@ const Product = ({ isSidebarCollapsed }) => {
               onClick={toggleFavorite}
               title="Избранное"
             >
-              {isFavorite ? '❤️' : '🤍'}
+              <img src="/images/ico/LikeIco.png" alt="" className={styles.actionIcon} />
             </button>
 
             <button
@@ -406,7 +406,7 @@ const Product = ({ isSidebarCollapsed }) => {
               onClick={copyLink}
               title="Скопировать ссылку"
             >
-              {copySuccess ? <img src="/images/ico/icoDone.png" alt="" className={styles.actionIcon} /> : '🔗'}
+              {copySuccess ? <img src="/images/ico/icoDone.png" alt="" className={styles.actionIcon} /> : <img src="/images/ico/linkIco.png" alt="" className={styles.actionIcon} />}
             </button>
 
             <button
@@ -414,7 +414,7 @@ const Product = ({ isSidebarCollapsed }) => {
               onClick={handleGoogleSearch}
               title="Найти инструкцию в Google"
             >
-              🔍
+              <img src="/images/ico/icoLupa.png" alt="" className={styles.actionIcon} />
             </button>
 
             <button
@@ -422,7 +422,7 @@ const Product = ({ isSidebarCollapsed }) => {
               onClick={handleAskAlice}
               title="Спросить Яндекс Алису"
             >
-              🎙️
+              <img src="/images/ico/AIico.png" alt="" className={styles.actionIcon} />
             </button>
           </div>
 

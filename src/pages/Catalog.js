@@ -12,6 +12,17 @@ const Catalog = () => {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [minRating, setMinRating] = useState(0);
+  const [appliedSearchQuery, setAppliedSearchQuery] = useState('');
+
+  const handleSearch = () => {
+    setAppliedSearchQuery(searchQuery);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -73,9 +84,9 @@ const Catalog = () => {
     filteredProducts = filteredProducts.filter(p => p.categories?.name === selectedCategory);
   }
 
-  // Поиск по названию
-  if (searchQuery.trim()) {
-    const query = searchQuery.toLowerCase();
+  // Поиск по названию (только примененный запрос)
+  if (appliedSearchQuery.trim()) {
+    const query = appliedSearchQuery.toLowerCase();
     filteredProducts = filteredProducts.filter(p =>
       p.name?.toLowerCase().includes(query) ||
       p.description?.toLowerCase().includes(query)
@@ -113,8 +124,12 @@ const Catalog = () => {
             placeholder="Поиск товара..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
             className={styles.searchInput}
           />
+          <button className={styles.searchButton} onClick={handleSearch}>
+            Найти
+          </button>
         </div>
 
         <div className={styles.filtersRow}>

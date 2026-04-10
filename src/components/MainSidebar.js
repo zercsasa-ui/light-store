@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { preloadCatalog } from '../supabase';
 import styles from './MainSidebar.module.css';
+import ConfirmModal from './ConfirmModal';
 
 const MainSidebar = ({ isCollapsed, setIsCollapsed }) => {
   const { userProfile, user, logout } = useAuth();
@@ -110,6 +111,15 @@ const MainSidebar = ({ isCollapsed, setIsCollapsed }) => {
            </li>
            <li>
              <NavLink
+               to="/calculator"
+               className={({ isActive }) => isActive ? `${styles.sidebarLink} ${styles.sidebarLinkActive}` : styles.sidebarLink}
+             >
+               <img src="/images/ico/calcumIco.png" alt="" className={styles.linkIcon} />
+               {!isCollapsed && <span>Калькулятор</span>}
+             </NavLink>
+           </li>
+           <li>
+             <NavLink
                to="/profile"
                className={({ isActive }) => isActive ? `${styles.sidebarLink} ${styles.sidebarLinkActive}` : styles.sidebarLink}
              >
@@ -172,20 +182,14 @@ const MainSidebar = ({ isCollapsed, setIsCollapsed }) => {
 
       {/* Модальное окно подтверждения выхода */}
       {showLogoutModal && (
-        <div className={styles.modalOverlay} onClick={() => setShowLogoutModal(false)}>
-          <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-            <h3 className={styles.modalTitle}>Выход из аккаунта</h3>
-            <p className={styles.modalMessage}>Вы действительно хотите выйти из аккаунта?</p>
-            <div className={styles.modalActions}>
-              <button className={styles.modalCancelBtn} onClick={() => setShowLogoutModal(false)}>
-                Отмена
-              </button>
-              <button className={styles.modalConfirmBtn} onClick={confirmLogout}>
-                Выйти
-              </button>
-            </div>
-          </div>
-        </div>
+        <ConfirmModal
+          isOpen={showLogoutModal}
+          onClose={() => setShowLogoutModal(false)}
+          onConfirm={confirmLogout}
+          title="Выход из аккаунта"
+          message="Вы действительно хотите выйти из аккаунта?"
+          confirmText="Выйти"
+        />
       )}
     </>
   );

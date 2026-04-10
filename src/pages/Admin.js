@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../supabase';
 import styles from './Admin.module.css';
+import ConfirmModal from '../components/ConfirmModal';
 
 const Admin = () => {
   const [expandedMessages, setExpandedMessages] = useState({});
@@ -20,7 +21,7 @@ const Admin = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [editingUser, setEditingUser] = useState(null);
   const [userForm, setUserForm] = useState({ name: '', email: '', role: '' });
-  
+
   // Состояния для вопросов о товарах
   const [questions, setQuestions] = useState([]);
   const [questionSearch, setQuestionSearch] = useState('');
@@ -479,12 +480,12 @@ const Admin = () => {
     const img = e.target;
     const width = img.offsetWidth;
     const height = img.offsetHeight;
-    
+
     setImageDimensions({ width, height });
 
     // Рассчитываем размер рамки выбора по центру с правильным соотношением
     let selectionWidth, selectionHeight;
-    
+
     if (width / height > TARGET_ASPECT_RATIO) {
       // Изображение шире нужного соотношения - ограничиваем по высоте
       selectionHeight = height * 0.8;
@@ -507,9 +508,9 @@ const Admin = () => {
   const handleCropMouseDown = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const target = e.target;
-    
+
     if (target.classList.contains(styles.cropResizeHandle)) {
       setIsResizing(true);
       setResizeHandle(target.dataset.corner);
@@ -545,11 +546,11 @@ const Admin = () => {
         y: newY
       }));
     }
-    
+
     if (isResizing) {
       const deltaX = e.clientX - dragStart.x;
       const deltaY = e.clientY - dragStart.y;
-      
+
       // Рассчитываем новую ширину и высоту с сохранением соотношения
       let newWidth = dragStart.selectionWidth;
       let newHeight = dragStart.selectionHeight;
@@ -598,7 +599,7 @@ const Admin = () => {
       if (newY + newHeight > imageDimensions.height) {
         newHeight = imageDimensions.height - newY;
       }
-      
+
       // Корректировка пропорций после ограничений
       const finalRatio = newWidth / newHeight;
       if (finalRatio > TARGET_ASPECT_RATIO) {
@@ -606,7 +607,7 @@ const Admin = () => {
       } else {
         newHeight = newWidth / TARGET_ASPECT_RATIO;
       }
-      
+
       // Финальная проверка чтобы точно не вышло за границы
       if (newX + newWidth > imageDimensions.width) {
         newX = imageDimensions.width - newWidth;
@@ -614,7 +615,7 @@ const Admin = () => {
       if (newY + newHeight > imageDimensions.height) {
         newY = imageDimensions.height - newHeight;
       }
-      
+
       // Минимальный размер
       newWidth = Math.max(100, newWidth);
       newHeight = Math.max(133, newHeight);
@@ -637,15 +638,15 @@ const Admin = () => {
   // Функция обрезки изображения
   const handleCropConfirm = async () => {
     setUploading(true);
-    
+
     try {
       // Создаем canvas для обрезки
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       const img = new Image();
-      
+
       img.src = originalImage;
-      
+
       await new Promise((resolve) => {
         img.onload = resolve;
       });
@@ -691,7 +692,7 @@ const Admin = () => {
       setProductForm({ ...productForm, image_url: publicUrl });
       setShowCropper(false);
       setOriginalImage(null);
-      
+
     } catch (error) {
       console.error('Error cropping image:', error);
       alert('Ошибка при обработке изображения');
@@ -865,19 +866,19 @@ const Admin = () => {
           Категории ({categories.length})
         </button>
         {userProfile?.role === 'admin' && (
+          <button
+            className={`${styles.tab} ${activeTab === 'users' ? styles.active : ''}`}
+            onClick={() => setActiveTab('users')}
+          >
+            Пользователи ({users.length})
+          </button>
+        )}
         <button
-          className={`${styles.tab} ${activeTab === 'users' ? styles.active : ''}`}
-          onClick={() => setActiveTab('users')}
+          className={`${styles.tab} ${activeTab === 'questions' ? styles.active : ''}`}
+          onClick={() => setActiveTab('questions')}
         >
-          Пользователи ({users.length})
+          Вопросы ({questions.length})
         </button>
-      )}
-      <button
-        className={`${styles.tab} ${activeTab === 'questions' ? styles.active : ''}`}
-        onClick={() => setActiveTab('questions')}
-      >
-        Вопросы ({questions.length})
-      </button>
       </div>
 
       {activeTab === 'requests' && (
@@ -1482,66 +1483,66 @@ const Admin = () => {
                 }).map(q => (
                   <div key={q.id} className={styles.requestCard}>
                     <div className={styles.requestLeft}>
-                    <div className={styles.requestHeader}>
+                      <div className={styles.requestHeader}>
                         <div>
                           Пользователь: <strong> {q.user_name}</strong>
-                      <div 
-                        style={{
-                          fontSize: '13px', 
-                          color: '#0d9488', 
-                          marginTop: '4px',
-                          cursor: 'pointer',
-                          position: 'relative'
-                        }}
-                        onClick={() => window.open(`/product/${q.products.id}`, '_blank')}
-                        onMouseEnter={(e) => {
-                          setHoveredProduct(q.products.id);
-                          window.lastMouseX = e.clientX;
-                          window.lastMouseY = e.clientY;
-                        }}
-                        onMouseLeave={() => setHoveredProduct(null)}
-                      >
-                        📦 О товаре: <strong>{q.products?.name}</strong>
+                          <div
+                            style={{
+                              fontSize: '13px',
+                              color: '#0d9488',
+                              marginTop: '4px',
+                              cursor: 'pointer',
+                              position: 'relative'
+                            }}
+                            onClick={() => window.open(`/product/${q.products.id}`, '_blank')}
+                            onMouseEnter={(e) => {
+                              setHoveredProduct(q.products.id);
+                              window.lastMouseX = e.clientX;
+                              window.lastMouseY = e.clientY;
+                            }}
+                            onMouseLeave={() => setHoveredProduct(null)}
+                          >
+                            📦 О товаре: <strong>{q.products?.name}</strong>
 
-                        {/* Всплывающая карточка товара при наведении */}
-                        {hoveredProduct === q.products.id && (
-                          <div style={{
-                            position: 'fixed',
-                            background: 'var(--bg-secondary)',
-                            border: '1px solid var(--border-color)',
-                            borderRadius: '8px',
-                            padding: '12px',
-                            width: '220px',
-                            zIndex: 999,
-                            boxShadow: '0 8px 24px var(--shadow-color)',
-                            left: `${document.body.scrollLeft + window.lastMouseX - 110}px`,
-                            top: `${document.body.scrollTop + window.lastMouseY + 10}px`,
-                            animation: 'fadeIn 0.15s ease'
-                          }}>
-                            <img 
-                              src={products.find(p => p.id === q.products.id)?.image_url || 'https://via.placeholder.com/200'} 
-                              alt={q.products.name}
-                              style={{
-                                width: '100%',
-                                height: '100px',
-                                objectFit: 'contain',
-                                borderRadius: '4px',
-                                marginBottom: '8px',
-                                background: 'var(--bg-tertiary)'
-                              }}
-                            />
-                            <p style={{margin: '0 0 4px 0', fontWeight: 600, fontSize: '13px'}}>{q.products.name}</p>
-                            <p style={{margin: '0', fontSize: '12px', color: '#0d9488'}}>
-                              💰 {products.find(p => p.id === q.products.id)?.price || 0} ₽
-                            </p>
-                            <p style={{margin: '4px 0 0 0', fontSize: '11px', color: 'var(--text-secondary)'}}>
-                              На складе: {products.find(p => p.id === q.products.id)?.stock || 0} шт.
-                            </p>
+                            {/* Всплывающая карточка товара при наведении */}
+                            {hoveredProduct === q.products.id && (
+                              <div style={{
+                                position: 'fixed',
+                                background: 'var(--bg-secondary)',
+                                border: '1px solid var(--border-color)',
+                                borderRadius: '8px',
+                                padding: '12px',
+                                width: '220px',
+                                zIndex: 999,
+                                boxShadow: '0 8px 24px var(--shadow-color)',
+                                left: `${document.body.scrollLeft + window.lastMouseX - 110}px`,
+                                top: `${document.body.scrollTop + window.lastMouseY + 10}px`,
+                                animation: 'fadeIn 0.15s ease'
+                              }}>
+                                <img
+                                  src={products.find(p => p.id === q.products.id)?.image_url || 'https://via.placeholder.com/200'}
+                                  alt={q.products.name}
+                                  style={{
+                                    width: '100%',
+                                    height: '100px',
+                                    objectFit: 'contain',
+                                    borderRadius: '4px',
+                                    marginBottom: '8px',
+                                    background: 'var(--bg-tertiary)'
+                                  }}
+                                />
+                                <p style={{ margin: '0 0 4px 0', fontWeight: 600, fontSize: '13px' }}>{q.products.name}</p>
+                                <p style={{ margin: '0', fontSize: '12px', color: '#0d9488' }}>
+                                  💰 {products.find(p => p.id === q.products.id)?.price || 0} ₽
+                                </p>
+                                <p style={{ margin: '4px 0 0 0', fontSize: '11px', color: 'var(--text-secondary)' }}>
+                                  На складе: {products.find(p => p.id === q.products.id)?.stock || 0} шт.
+                                </p>
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
                         </div>
-                       <span className={styles.requestDate}>
+                        <span className={styles.requestDate}>
                           {new Date(q.created_at).toLocaleDateString('ru-RU')}
                         </span>
                       </div>
@@ -1549,50 +1550,50 @@ const Admin = () => {
                     </div>
 
                     <div className={styles.requestRight}>
-                       <div className={styles.requestStatus}>
-                         {!q.is_published && <span className={`${styles.status} ${styles.statusPending}`}>На модерации</span>}
-                         {q.is_published && !q.is_answered && <span className={`${styles.status} ${styles.statusInProgress}`}>Опубликован</span>}
-                         {q.is_answered && <span className={`${styles.status} ${styles.statusCompleted}`}>Отвечен</span>}
-                       </div>
+                      <div className={styles.requestStatus}>
+                        {!q.is_published && <span className={`${styles.status} ${styles.statusPending}`}>На модерации</span>}
+                        {q.is_published && !q.is_answered && <span className={`${styles.status} ${styles.statusInProgress}`}>Опубликован</span>}
+                        {q.is_answered && <span className={`${styles.status} ${styles.statusCompleted}`}>Отвечен</span>}
+                      </div>
                       <div className={styles.requestActions}>
                         {editingQuestion !== q.id ? (
                           <>
-                             {/* Отображаем ответ если он существует */}
-                             {q.product_answers && q.product_answers.length > 0 && (
-                               <div style={{
-                                 width: '100%',
-                                 marginTop: '12px',
-                                 padding: '12px',
-                                 background: 'rgba(13, 148, 136, 0.08)',
-                                 borderLeft: '3px solid #0d9488',
-                                 borderRadius: '0 8px 8px 0'
-                               }}>
-                                 <div style={{
-                                   fontWeight: 600,
-                                   color: '#0d9488',
-                                   fontSize: '13px',
-                                   marginBottom: '6px'
-                                 }}>
-                                    Ответ от {q.product_answers[0].responder_name}:
-                                 </div>
-                                 <p style={{margin: 0, fontSize: '14px', color: 'var(--text-primary)'}}>
-                                   {q.product_answers[0].answer_text}
-                                 </p>
-                               </div>
-                             )}
+                            {/* Отображаем ответ если он существует */}
+                            {q.product_answers && q.product_answers.length > 0 && (
+                              <div style={{
+                                width: '100%',
+                                marginTop: '12px',
+                                padding: '12px',
+                                background: 'rgba(13, 148, 136, 0.08)',
+                                borderLeft: '3px solid #0d9488',
+                                borderRadius: '0 8px 8px 0'
+                              }}>
+                                <div style={{
+                                  fontWeight: 600,
+                                  color: '#0d9488',
+                                  fontSize: '13px',
+                                  marginBottom: '6px'
+                                }}>
+                                  Ответ от {q.product_answers[0].responder_name}:
+                                </div>
+                                <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-primary)' }}>
+                                  {q.product_answers[0].answer_text}
+                                </p>
+                              </div>
+                            )}
 
-                             <button
-                               className={styles.editBtn}
-                               onClick={() => {
-                                 setEditingQuestion(q.id);
-                                 // Если есть уже ответ - подставляем его в поле ввода
-                                 if (q.product_answers && q.product_answers.length > 0) {
-                                   setAnswerText(q.product_answers[0].answer_text);
-                                 } else {
-                                   setAnswerText('');
-                                 }
-                               }}
-                             >
+                            <button
+                              className={styles.editBtn}
+                              onClick={() => {
+                                setEditingQuestion(q.id);
+                                // Если есть уже ответ - подставляем его в поле ввода
+                                if (q.product_answers && q.product_answers.length > 0) {
+                                  setAnswerText(q.product_answers[0].answer_text);
+                                } else {
+                                  setAnswerText('');
+                                }
+                              }}
+                            >
                               {q.product_answers && q.product_answers.length > 0 ? 'Изменить ответ' : 'Ответить'}
                             </button>
                             {!q.is_published && (
@@ -1631,38 +1632,38 @@ const Admin = () => {
                           maxLength={500}
                         />
                         <div className={styles.editActions}>
-                           <button onClick={async () => {
-                             try {
-                               const { data: { session } } = await supabase.auth.getSession();
-                               
-                               const response = await fetch('https://mutebkvjowivxupnexzp.supabase.co/functions/v1/submit-answer', {
-                                 method: 'POST',
-                                 headers: {
-                                   'Authorization': `Bearer ${session.access_token}`,
-                                   'Content-Type': 'application/json'
-                                 },
-                                 body: JSON.stringify({
-                                   questionId: q.id,
-                                   answerText: answerText,
-                                   responderId: user.id,
-                                   responderName: userProfile.name
-                                 })
-                               });
+                          <button onClick={async () => {
+                            try {
+                              const { data: { session } } = await supabase.auth.getSession();
 
-                               if (!response.ok) {
-                                 const error = await response.json();
-                                 throw new Error(error.error || 'Ошибка сервера');
-                               }
+                              const response = await fetch('https://mutebkvjowivxupnexzp.supabase.co/functions/v1/submit-answer', {
+                                method: 'POST',
+                                headers: {
+                                  'Authorization': `Bearer ${session.access_token}`,
+                                  'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                  questionId: q.id,
+                                  answerText: answerText,
+                                  responderId: user.id,
+                                  responderName: userProfile.name
+                                })
+                              });
 
-                               setEditingQuestion(null);
-                               setAnswerText('');
-                               fetchData();
-                               showSuccess('✅ Ответ сохранен и опубликован!');
-                             } catch (error) {
-                               console.error('Ошибка отправки ответа:', error);
-                               alert(`Ошибка: ${error.message}`);
-                             }
-                           }}>Отправить ответ</button>
+                              if (!response.ok) {
+                                const error = await response.json();
+                                throw new Error(error.error || 'Ошибка сервера');
+                              }
+
+                              setEditingQuestion(null);
+                              setAnswerText('');
+                              fetchData();
+                              showSuccess('✅ Ответ сохранен и опубликован!');
+                            } catch (error) {
+                              console.error('Ошибка отправки ответа:', error);
+                              alert(`Ошибка: ${error.message}`);
+                            }
+                          }}>Отправить ответ</button>
                           <button onClick={() => setEditingQuestion(null)}>Отмена</button>
                         </div>
                       </div>
@@ -1671,8 +1672,8 @@ const Admin = () => {
                 ))}
               </div>
             )}
-          </div>
-        
+        </div>
+
       )}
 
       {activeTab === 'categories' && (
@@ -1790,36 +1791,25 @@ const Admin = () => {
         </div>
       )}
 
-      {/* Модальное окно подтверждения */}
+      {/* Модальное окно подтверждения действий */}
       {confirmModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <h3 className={styles.modalTitle}>Подтверждение действия</h3>
-            <p className={styles.modalMessage}>
-              {confirmModal.action === 'delete_product' && `Вы действительно хотите удалить товар "${confirmModal.item.name}"? Это действие нельзя отменить.`}
-              {confirmModal.action === 'delete_request' && `Вы действительно хотите удалить заявку от ${confirmModal.item.profiles?.name}?`}
-              {confirmModal.action === 'delete_user' && `Вы действительно хотите удалить пользователя "${confirmModal.item.name}"?`}
-              {confirmModal.action === 'reset_password' && `Отправить ссылку для сброса пароля на email ${confirmModal.item.email}?`}
-              {confirmModal.action === 'cancel_edit_product' && 'Отменить редактирование товара? Все несохраненные изменения будут потеряны.'}
-              {confirmModal.action === 'cancel_edit_user' && 'Отменить редактирование пользователя? Все несохраненные изменения будут потеряны.'}
-              {confirmModal.action === 'delete_category' && `Вы действительно хотите удалить категорию "${confirmModal.item.name}"? Товары в этой категории останутся без категории.`}
-            </p>
-            <div className={styles.modalActions}>
-              <button
-                className={styles.modalConfirmBtn}
-                onClick={handleConfirmAction}
-              >
-                Подтвердить
-              </button>
-              <button
-                className={styles.modalCancelBtn}
-                onClick={() => setConfirmModal(null)}
-              >
-                Отмена
-              </button>
-            </div>
-          </div>
-        </div>
+        <ConfirmModal
+          isOpen={!!confirmModal}
+          onClose={() => setConfirmModal(null)}
+          onConfirm={handleConfirmAction}
+          title="Подтверждение действия"
+          message={
+            confirmModal.action === 'delete_product' ? `Вы действительно хотите удалить товар "${confirmModal.item.name}"? Это действие нельзя отменить.` :
+            confirmModal.action === 'delete_request' ? `Вы действительно хотите удалить заявку от ${confirmModal.item.profiles?.name}?` :
+            confirmModal.action === 'delete_user' ? `Вы действительно хотите удалить пользователя "${confirmModal.item.name}"?` :
+            confirmModal.action === 'reset_password' ? `Отправить ссылку для сброса пароля на email ${confirmModal.item.email}?` :
+            confirmModal.action === 'cancel_edit_product' ? 'Отменить редактирование товара? Все несохраненные изменения будут потеряны.' :
+            confirmModal.action === 'cancel_edit_user' ? 'Отменить редактирование пользователя? Все несохраненные изменения будут потеряны.' :
+            confirmModal.action === 'delete_category' ? `Вы действительно хотите удалить категорию "${confirmModal.item.name}"? Товары в этой категории останутся без категории.` :
+            ''
+          }
+          confirmText="Подтвердить"
+        />
       )}
 
       {/* Модальное окно для обрезки изображения */}
@@ -1828,18 +1818,18 @@ const Admin = () => {
           <div className={styles.cropperContainer}>
             <h3 className={styles.cropperTitle}>Выберите область для фотографии</h3>
             <p className={styles.cropperHint}>Фотографии всех товаров будут одинакового размера 600×800 px</p>
-            
+
             <div className={styles.cropperImageWrapper}>
-              <img 
-                src={originalImage} 
-                alt="Original" 
+              <img
+                src={originalImage}
+                alt="Original"
                 className={styles.cropperImage}
                 onLoad={handleCropperImageLoad}
                 draggable={false}
               />
-              
+
               {/* Рамка выбора области */}
-              <div 
+              <div
                 className={styles.cropSelection}
                 style={{
                   left: cropSelection.x,
@@ -1854,7 +1844,7 @@ const Admin = () => {
                 <div className={`${styles.cropResizeHandle} ${styles.cropHandleBL}`} data-corner="bl" onMouseDown={handleCropMouseDown}></div>
                 <div className={`${styles.cropResizeHandle} ${styles.cropHandleBR}`} data-corner="br" onMouseDown={handleCropMouseDown}></div>
               </div>
-              
+
               {/* Затемнение вокруг выбранной области */}
               <div className={styles.cropOverlay} style={{
                 clipPath: `polygon(
